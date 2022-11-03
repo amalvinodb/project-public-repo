@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-dark min-vh-100">
+                <a href="/admin"
+                    class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <ul><span class="fs-5 d-none d-sm-inline fw-bold text-decoration-underline">Admin Pannel</span></ul>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li>
+                        <a href="/admin/dashBoard?time=1" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">dash
+                                board</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/allOrders" class="nav-link text-dark align-middle px-0">
+                            <i class="fs-4 bi-box-seam-fill"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/allProducts" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-list-ul"></i> <span class="ms-1 d-none d-sm-inline">All
+                                Products</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Manage
+                                catagories</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/allUsers" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill "
+                            style="width: 220px;background-color:blue">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Manage users</span></a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/report?ext=0" class="nav-link text-dark text-primary px-0 align-middle">
+                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/cupon" class="nav-link text-dark px-0 align-middle">
+                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">cupons</span> </a>
+                    </li>
+                    <li>
+                        <a href="/admin/offers" class="nav-link text-dark text-primary px-0 align-middle">
+                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">offers</span>
+                        </a>
+                    </li>
+                    <li><a class="text-danger nav-link px-0 align-middle" href="/admin/logout"> <i
+                                class="bi bi-box-arrow-left"></i> Sign out</a></li>
+                </ul>
+                <hr>
+
+            </div>
+        </div>
+        <div class="col py-3">
+            <p class="fw-bold text-success fs-2 text-center text-decoration-underline">All Users</p>
+            <section>
+                <table class="table" id="table_id">
+                    <thead>
+                        <tr>
+                            <th scope="col">index</th>
+                            <th scope="col">user name</th>
+                            <th scope="col">email</th>
+
+                            <th scope="col">option</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr>
+                            <th scope="row">{{inc @index}}</th>
+                            <td>{{this.Name}}</td>
+                            <td>{{this.email}}</td>
+                            <td>
+                                {{#if this.userStatus}}
+
+                                <a class="btn btn-primary" href="/admin/blockUser/{{this._id}}" role="button"
+                                    onclick="return confirm('are you sure?')">block</a>
+                                {{else}}
+                                <a class="btn btn-danger" href="/admin/unblockUser/{{this._id}}" role="button"
+                                    onclick="return confirm('are you sure?')">unblock</a>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+</script>

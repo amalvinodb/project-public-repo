@@ -1,0 +1,210 @@
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-dark min-vh-100">
+                <a href="/admin"
+                    class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <ul><span class="fs-5 d-none d-sm-inline fw-bold text-decoration-underline">Admin Pannel</span></ul>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li>
+                        <a href="/admin/dashBoard?time=1"
+                            class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
+                            style="width: 220px;background-color:blue">
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">dash
+                                board</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/allOrders" class="nav-link text-dark align-middle px-0">
+                            <i class="fs-4 bi-box-seam-fill"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/allProducts" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-list-ul"></i> <span class="ms-1 d-none d-sm-inline">All
+                                Products</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Manage
+                                catagories</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/allUsers" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Manage users</span></a>
+                    </li>
+
+                    <li>
+                        <a href="/admin/report?ext=0" class="nav-link text-dark text-primary px-0 align-middle">
+                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/cupon" class="nav-link text-dark px-0 align-middle">
+                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">cupons</span> </a>
+                    </li>
+                    <li>
+                        <a href="/admin/offers" class="nav-link text-dark text-primary px-0 align-middle">
+                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">offers</span>
+                        </a>
+                    </li>
+                    <li><a class="text-danger nav-link px-0 align-middle" href="/admin/logout"> <i
+                                class="bi bi-box-arrow-left"></i> Sign out</a></li>
+                </ul>
+                <hr>
+
+            </div>
+        </div>
+
+        <div class="col py-3">
+            <p class="fw-bold text-success fs-2 text-center text-decoration-underline">Admin Dashboard</p>
+            <section>
+                <div class="d-flex mt-5">
+                    {{!-- total no of sales --}}
+                    <div class="card" style="width: 13rem; background-color: #d6e0ff;">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <img src="https://img.icons8.com/ios-glyphs/30/000000/delivered-box.png" />
+
+                            </div>
+                            <div class="ms-3" style="color: #3366FF;">
+                                <h6 class="card-title">Total Orders</h6>
+                                <p class="card-text text-center h5 m-0 p-0" id="totalOrders">
+                                    {{data.allOrders}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {{!-- total amount of sales --}}
+                    <div class="card ms-3" style="width: 13rem; background-color: #d6ffdd;">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <img src="https://img.icons8.com/ios/50/000000/banknotes.png" />
+                            </div>
+                            <div class="ms-3" style="color: #13ab34;">
+                                <h6 class="card-title">Total Amount</h6>
+                                <p class="card-text text-center h5 m-0 p-0" id="totalAmount">
+                                    {{data.totalSalesAmount}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {{!-- total cod order ammount --}}
+                    {{!-- <div class="card ms-3" style="width: 13rem; background-color: #ffd6d9;">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <img src="https://img.icons8.com/ios/50/000000/banknotes.png" />
+                            </div>
+                            <div class="ms-3" style="color: #ff333f;">
+                                <h6 class="card-title">cash on delivery</h6>
+                                <p class="card-text text-center h5 m-0 p-0" id="totalAmount">
+                                    500
+                                </p>
+                            </div>
+                        </div>
+                    </div> --}}
+                    {{!-- total paypal amount --}}
+                    {{!-- <div class="card ms-3" style="width: 13rem; background-color: #ffd6d9;">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <img src="https://img.icons8.com/ios/50/000000/banknotes.png" />
+                            </div>
+                            <div class="ms-3" style="color: #ff333f;">
+                                <h6 class="card-title">pay pal</h6>
+                                <p class="card-text text-center h5 m-0 p-0" id="totalAmount">
+                                    500
+                                </p>
+                            </div>
+                        </div>
+                    </div> --}}
+                    {{!-- total razopay --}}
+                    {{!-- <div class="card ms-3" style="width: 13rem; background-color: #ffd6d9;">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <img src="https://img.icons8.com/ios/50/000000/banknotes.png" />
+                            </div>
+                            <div class="ms-3" style="color: #ff333f;">
+                                <h6 class="card-title">razo pay</h6>
+                                <p class="card-text text-center h5 m-0 p-0" id="totalAmount">
+                                    500
+                                </p>
+                            </div>
+                        </div>
+                    </div> --}}
+                </div>
+
+
+            </section>
+            <section class="d-flex my-5">
+                <canvas id="myChart" style="max-width: 50%; height: 300px;"></canvas>
+                <canvas id="chart2" style="max-width: 50%;"></canvas>
+            </section>
+
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    const labels = [
+        'orders delivered',
+        'orders placed',
+        'orders shipped',
+        'orders canceled',
+
+    ]
+    const label2 =[
+    'cash on delivery',
+    'orders delivered',
+    'orders placed',
+    ''
+    ]
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: labels,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [22, 20, 25, 16, 23, 0],
+        }]
+    };
+
+    var myChart = new Chart("myChart", {
+        type: "bar",
+        data: {
+        labels: labels,
+        datasets: [{
+            label: 'My First Dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [{{data.shipped}}, {{data.delilvered}}, {{data.placed}}, {{data.codOrders}},10, 0],
+        }]
+    },
+        options: {
+            title: {
+                display: true,
+                text: "World Wide Wine Production 2018"
+            }
+        }
+    });
+    var mychart2 = new Chart("chart2", {
+        type: "pie",
+        data: {
+        labels: labels,
+        datasets: [{
+            label: labels,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [{{data.placed}}, {{data.delivered}}, {{data.shipped}}, {{data.cancel}}],
+        }]
+    },
+        options: {
+            title: {
+                display: true,
+                text: "World Wide Wine Production 2018"
+            }
+        }
+    })
+</script>

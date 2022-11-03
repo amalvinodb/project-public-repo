@@ -1,0 +1,96 @@
+<section class="d-flex mx-3">
+  <section class="m-3 border p-2" style="max-height: 500px; width:250px">
+   <h4>Catagories</h4>
+   {{#each catagories}}
+   <div class="btn" onclick="filter('{{this._id}}')">{{this.catagoryName}}</div> <br>
+   {{/each}}
+  </section>
+<section class="contain mt-5">
+  <div class="dropdown m-2">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+     sort
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" onclick="sort('1')">low to high</a></li>
+    <li><a class="dropdown-item" onclick="sort('-1')">high to low</a></li>
+  </ul>
+</div>
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    {{#each products}}
+    <div class="col">
+
+      <div class="card" style="width: 18rem;">
+
+        <img src="{{this.images.[0]}}" class="card-img-top" alt="..."
+          style="margin:0 auto; width: 200px;height: 200px;">
+        <div class="card-body">
+
+          <a href="/item/{{this._id}}" class="text-decoration-none">
+            <h4 class="card-title text-dark">{{this.productName}}</h4>
+          </a>
+          <h5>Rs:<del>{{this.price}}</del> <span class="text-primary bi-currency-rupee">{{this.offerPrice}}</span> /-
+          </h5>
+          <p class="card-text"
+            style=" white-space: nowrap;max-width: 50px; overflow: hidden;text-overflow: ellipsis; margin-right:50px; ">
+            {{this.discription}}</p>
+          {{!-- <a href="/user/addToCart/{{this._id}}" class="btn btn-primary">Add to cart</a> --}}
+          <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">add to cart</button>
+          <a onclick="addToWishlist('{{this._id}}')"><i class="bi bi-heart text-danger"></i></a>
+          {{!-- <button  class="btn btn-success"><i class="bi bi-heart"></i></button> --}}
+        </div>
+      </div>
+    </div>
+    {{/each}}
+    <div>
+
+    </div>
+  </div>
+  <nav aria-label="Page navigation example" class="m-2">
+  <ul class="pagination">
+    
+    {{#each pages}}
+    <li class="page-item"><a class="page-link" onclick="sendPage({{this}})">{{inc @index}}</a></li>
+    {{/each}}
+    
+  </ul>
+</nav>
+</section>
+  
+</section>
+
+
+<section class="mt-5">
+  {{!-- {{>user-footer}} --}}
+</section>
+<script>
+  function filter(catagoryId){
+    let url = new URL(window.location.href)
+
+    let params = new URLSearchParams(url.search)
+
+    params.set('catg',catagoryId)
+    let newParams = params.toString()
+
+    location.href = window.location.protocol + '//' + window.location.host + '/allProducts?' + newParams
+  }
+  function sort(num){
+    let url = new URL(window.location.href)
+
+    let params = new URLSearchParams(url.search)
+
+    params.set('sort',num)
+    let newParams = params.toString()
+ 
+    location.href = window.location.protocol + '//' + window.location.host + '/allProducts?' + newParams
+  }
+  function sendPage(pg){
+       let url = new URL(window.location.href)
+
+    let params = new URLSearchParams(url.search)
+
+    params.set('page',pg)
+    let newParams = params.toString()
+ 
+    location.href = window.location.protocol + '//' + window.location.host + '/allProducts?' + newParams
+  }
+</script>

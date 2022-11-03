@@ -1,0 +1,92 @@
+<section class="contain mt-5">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {{#each orderDetails}}
+        {{#each this.products}}
+        <div class="col">
+
+            <div class="card" style="width: 18rem;">
+
+                <img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
+                    style="margin:0 auto; width: 200px;height: 200px;">
+                <div class="card-body">
+
+                    <a href="/item/{{this.product._id}}" class="text-decoration-none">
+                        <h4 class="card-title text-dark">{{this.product.productName}}</h4>
+                    </a>
+                    <h5>Rs:<del>{{this.product.price}}</del> <span
+                            class="text-primary bi-currency-rupee">{{this.product.offerPrice}}</span> /- </h5>
+                    <p class="card-text"
+                        style=" white-space: nowrap;max-width: 50px; overflow: hidden;text-overflow: ellipsis; margin-right:50px; ">
+                        {{this.product.discription}}</p>
+
+                    {{!-- <a href="/user/addToCart/{{this._id}}" class="btn btn-primary">Add to cart</a> --}}
+                    {{!-- <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">add to cart</button> --}}
+                    <p>quantity of product: <span class="text-success">{{this.quantity}}</span></p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+        {{/each}}
+
+    </div>
+</section>
+<section class="container mt-2">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3 class="h6">Payment Method</h3>
+                    <p>{{address.paymentMethod}} <br>
+                        {{#each address.totalPrice}}
+                        Total: {{this.total}}
+                        {{/each}}
+                    <p>order status: <span>{{address.status}}</span> </p>
+                    <p>order date: {{address.date}}</p>
+                    {{#if address.orderValidity}}
+                    <h4>your order have been shipped</h4>
+                    <p>date of shiping: <span>{{address.shippingDate}}</span> </p>
+                    <p>your order is yet to arrive</p>
+                    {{else}}
+
+                    {{#if address.isDelivered}}
+                    <h4 class="text-success">your order have been delevered</h4>
+                    <p>date of delivery: <span>{{address.deliveryDate}}</span></p>
+
+                    {{else}}
+                    <h4 class="text-danger">your order have been canceled!</h4>
+                    <p>date of cansalation:
+                        <span class="text-danger">{{address.cancalationDate}} </span>
+                    </p>
+                    {{/if}}
+                    {{/if}}
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="h6">Billing address</h3>
+                    <address>
+                        <strong>{{address.deleveryDetails.userName}}</strong><br>
+                        {{address.deleveryDetails.hname}}<br>
+                        {{address.deleveryDetails.town}},
+                        {{address.deleveryDetails.state}},{{address.deleveryDetails.pin}}<br>
+                        <abbr title="Phone">Ph:</abbr> {{address.deleveryDetails.phnumber}}
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+<section class="container">
+    <a href="/user/allOrders" class="btn btn-primary">view all orders</a>
+   
+    {{#if address.orderValidity}}
+    <a href="/user/cancelOrder/{{address._id}}" class="btn btn-danger" onclick="return confirm('are you sure?')">cancel
+        order</a>
+    {{/if}}
+    {{#if address.canBeReturned}}
+     <a href="/user/returnOrder?orderId={{address._id}}" class="btn btn-danger">return</a>
+    {{/if}}
+</section>
+
+{{!-- <section class="mt-5">
+    {{>user-footer}}
+</section> --}}

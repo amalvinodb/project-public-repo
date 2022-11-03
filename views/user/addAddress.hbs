@@ -1,0 +1,71 @@
+<section class="mt-5" style="max-width: 800px; margin:0px auto">
+  <form action="/user/addAddress" method="post">
+    <div class="d-fle">
+      <div>
+        <div class="col-md-12 mb-1">
+          <div class="form-outline">
+            <input name="userName" type="text" id="quantity" class="form-control form-control-lg" required />
+            <label class="form-label" for="firstName">user Name</label>
+          </div>
+        </div>
+        <div class="col-md-12 mb-1">
+          <div class="form-outline">
+            <input name="phnumber" type="" id="quantity" class="form-control form-control-lg" required />
+            <label class="form-label" for="firstName">phone number</label>
+          </div>
+        </div>
+        <div class="col-md-12 mb-1">
+          <div class="form-outline">
+            <input name="pin" type="" id="quantity" class="form-control form-control-lg" required />
+            <label class="form-label" for="firstName">pincode</label>
+          </div>
+        </div>
+        <div class="col-md-12 mb-1">
+          <div class="form-outline">
+            <input name="hname" type="" id="quantity" class="form-control form-control-lg" required />
+            <label class="form-label" for="firstName">flat No, house name,building,company,apartment</label>
+          </div>sd
+        </div>
+        <div class="col-md-12 mb-1">
+          <div class="form-outline">
+            <input name="region" type="" id="quantity" class="form-control form-control-lg" required />
+            <label class="form-label" for="firstName">area, street,sector,village</label>
+          </div>
+        </div>
+        <div class="col-md-12 mb-1">
+          <div class="form-outline">
+            <input name="lmk" type="" id="quantity" class="form-control form-control-lg" required />
+            <label class="form-label" for="firstName">land mark</label>
+          </div>
+        </div>
+        {{! <div class="col-md-12 mb-1">
+                <div class="form-outline">
+                    <input name="quantity" type="" id="quantity" class="form-control form-control-lg" required />
+                    <label class="form-label" for="firstName">phone number</label>
+                </div>
+            </div> }}
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="form-outline">
+              <input name="town" type="text" id="quantity" class="form-control form-control-lg" required />
+              <label class="form-label" for="firstName">town or city</label>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4">
+            <div class="form-outline">
+              <input name="state" type="text" id="offerPrice" class="form-control form-control-lg" required />
+              <label class="form-label" for="offerPrice">state</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{! <a href="/user/addAddress" class="btn btn-primary">add address</a> }}
+      <button class="btn btn-primary" type="submit">add address</button>
+      <div class="invisible">
+        <input name="userId" type="text" value="{{user._id}}" />
+      </div>
+    </div>
+  </form>
+
+</section>

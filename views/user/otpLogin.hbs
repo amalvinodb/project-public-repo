@@ -1,0 +1,33 @@
+<section>
+    <section class="vh-100" style="background-color: rgb(194, 194, 194);">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <h3 class="mb-5">User Sign in</h3>
+                            <form action="/user/otplogin" method="post">
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form2Example1">Email address</label>
+                                    <input name="email" type="email" id="form2Example1" class="form-control" />
+                                </div>    
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+                            </form>
+                            {{!-- register link --}}
+                            <div>
+                                <p class="mb-0">Don't have an account? <a href="/user/signup" class="text-primary-50 fw-bold">Sign
+                                        Up</a>
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{!-- {{>user-footer}} --}}
+    </section>
+
+</section>

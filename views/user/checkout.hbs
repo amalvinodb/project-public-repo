@@ -1,0 +1,174 @@
+<form action="/user/checkout"  id="checkoutForm">
+  <section class="container mt-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Handle</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each prod}}
+        <tr>
+          <th scope="row">{{inc @index}}</th>
+          <td>{{this.product.productName}}</td>
+          <td>{{this.product.offerPrice}}</td>
+          <td>{{this.quantity}}</td>
+        </tr>
+        {{/each}}
+
+      </tbody>
+    </table>
+  </section>
+  <section class="container d-flex">
+    <div class="col-md-5 w-50 h-100 p-5 m-5">
+      <label for="">select your address line</label>
+      <select name="addressline" class="form-select" aria-label="Default select example" required>
+
+        {{#each address}}
+        <option value="{{this._id}}">
+          <p>{{this.userName}}</p>
+        </option>
+        {{/each}}
+
+      </select>
+      <a href="/user/addAddress"> add an address</a>
+    </div>
+    <div class="m-5 bg-light w-50 h-100 p-5">
+      {{#each total}}
+      <p>total amount: <span>{{this.total}}</span>Rs<br>
+      discount: <span id="discount">0</span> <br>
+      final: <span id="final">{{this.total}}</span>
+      </p>
+      <p></p>
+      
+      {{/each}}
+      <hr />
+      <h3>choose payment option</h3>
+
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment" id="inlineRadio1" value="cod" checked />
+        <label class="form-check-label" for="inlineRadio1">cod</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment" id="inlineRadio2" value="razopay" />
+        <label class="form-check-label" for="inlineRadio2">razo</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment" id="inlineRadio2" value="paypal" />
+        <label class="form-check-label" for="inlineRadio2">paypal</label>
+      </div><div class="form-check">
+        <input class="form-check-input" type="radio" name="payment" id="inlineRadio2" value="wallet" />
+        <label class="form-check-label" for="inlineRadio2">wallet</label>
+      </div>
+      <div class="form-check">
+        <input class="" type="text" name="cupon" id="cupon"/>
+        <div class="btn btn-success" onclick="applycupon('{{total.[0].total}}')">apply</div>
+        <label class="form-check-label" for="cupon">enter your cupon code</label>
+        
+      </div>
+      <input class="invisible" type="text" name="userId" id="" value="{{user._id}}">
+      <button type="submit" class="btn btn-primary mt-5">proceed</button>
+    </div>
+
+  </section>
+
+</form>
+{{!-- {{>user-footer}} --}}
+
+<script>
+  $('#checkoutForm').submit((e) => {
+  
+    e.preventDefault()
+
+    $.ajax({
+      url: '/user/checkout',
+      method: 'post',
+      data: $('#checkoutForm').serialize(),
+      success: (responce) => {
+
+        if (responce.success == true) {
+      
+          location.href = '/user/orderSucess?order=' + responce.order
+        } else if(responce.route == 'pal'){
+
+          console.log('paypal')
+          location.href=responce.serc
+        }else if (responce.route == 'razo'){
+
+          let amount1 = responce.amount
+          console.log("pay", amount1)
+          var options = {
+            "key": "rzp_test_PRPUFdPJGUsqx2", // Enter the Key ID generated from the Dashboard
+            "amount": amount1, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "tech park",
+            "description": "payment for purchase",
+            "image": "https://example.com/your_logo",
+            "order_id": responce.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+
+              verifyPayment(response, responce)
+            },
+            "prefill": {
+              "name": "amal vinod",
+              "email": "amalvinodb2000@gmail.com",
+              "contact": "8157876820"
+            },
+            "notes": {
+              "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+              "color": "#3399cc"
+            }
+
+          };
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+        }else if(responce.route == 'wallet'){
+        
+        }
+      }
+    })
+  })
+  function verifyPayment(payment, responce) {
+    alert("order was placed")
+    $.ajax({
+      url: '/user/verify-payment',
+      data: {
+        payment,
+        responce
+      },
+      method: 'post',
+      success: (responce) => {
+        console.log(responce,"hello")
+        if (responce.status) {
+          location.href = '/user/orderSucess?order=' + responce.order
+        } else {
+          alert('order failed')
+        }
+
+      }
+    })
+  }
+  function applycupon(total){
+
+    let code = document.getElementById("cupon").value
+
+    $.ajax({
+      url:'/user/applyCupon',
+      data:{
+        total,
+        code,
+      },
+      method:'post',
+      success:(responce)=>{
+        alert("cupon have been applied for: " + responce.cuponRate + "   total of: " + responce.final)
+        document.getElementById("discount").innerText = responce.cuponRate
+        document.getElementById("final").innerText = responce.final
+      }
+    })
+  }
+</script>

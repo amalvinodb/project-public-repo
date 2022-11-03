@@ -1,0 +1,87 @@
+<section class="contain">
+    <p class="text-center mt-5 fs-1 fw-bold text-success">order have been sucessfull</p>
+    <section class="border">
+        <div id="htmlContent">
+            <div>
+                <h2 class="text-center fw-bold ">order report</h2>
+            </div>
+            <div>
+                <table class="table">
+
+                    <tbody>
+                        <tr>
+                            <th>index</th>
+                            <th>item</th>
+                            <th>quantity</th>
+                            <th>price</th>
+                        </tr>
+                        {{#each order.products}}
+                        <tr>
+                            <td scope="row">{{inc @index}}</td>
+                            <td>{{this.product.productName}}</td>
+                            <td>{{this.quantity}}</td>
+                            <td>{{this.product.offerPrice}}</td>
+                        </tr>
+                        {{/each}}
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div>
+                <div class="p-2">
+                    <p>
+                        name = {{order.deleveryDetails.userName}} <br>
+                        house name = {{order.deleveryDetails.hname}} <br>
+                        phone = {{order.deleveryDetails.phnumber}} <br>
+
+                    </p>
+                    <p>
+                         price = {{order.firstPrice}}  <br>
+                        discount = {{order.discountRate}} <br>
+                        
+                        
+                        
+
+                    </p>
+                    <h3>total = {{order.totalPrice.[0].total}} <br></h3>
+                    <p>payment methord = {{order.paymentMethod}}</p>
+                </div>
+                <hr>
+                <div class="mx-5 px-5">
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <p>
+        <button id="generatePDF">generate PDF</button>
+    </p>
+    <div class="mt-5">
+        <a href="/user/allOrders">all orders</a>
+
+    </div>
+
+</section>
+<script>
+    var doc = new jsPDF();
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    //margins.left, // x coord   margins.top, { // y coord
+    $('#generatePDF').click(function () {
+        doc.fromHTML($('#htmlContent').html(), 15, 15, {
+            'width': 700,
+            'elementHandlers': specialElementHandlers
+        });
+        doc.save('sample_file.pdf');
+    });
+</script>
