@@ -1,5 +1,5 @@
 <section class="d-flex mx-3">
-  <section class="m-3 border p-2" style="max-height: 500px; width:250px">
+  <section class="m-3 border p-2 bg-light" style="max-height: 500px; width:250px">
    <h4>Catagories</h4>
    {{#each catagories}}
    <div class="btn" onclick="filter('{{this._id}}')">{{this.catagoryName}}</div> <br>
@@ -34,7 +34,7 @@
             style=" white-space: nowrap;max-width: 50px; overflow: hidden;text-overflow: ellipsis; margin-right:50px; ">
             {{this.discription}}</p>
           {{!-- <a href="/user/addToCart/{{this._id}}" class="btn btn-primary">Add to cart</a> --}}
-          <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">add to cart</button>
+          <button onclick="addToCart('{{this._id}}')" class="btn btn-success"><i class="bi bi-cart3"></i></button>
           <a onclick="addToWishlist('{{this._id}}')"><i class="bi bi-heart text-danger"></i></a>
           {{!-- <button  class="btn btn-success"><i class="bi bi-heart"></i></button> --}}
         </div>
@@ -42,7 +42,7 @@
     </div>
     {{/each}}
     <div>
-
+hhe lh 
     </div>
   </div>
   <nav aria-label="Page navigation example" class="m-2">

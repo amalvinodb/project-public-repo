@@ -310,7 +310,10 @@ module.exports = {
 		});
 	},
 	placeOrder: (order, products, total, address, final, rate) => {
+		let today = new Date();
+		let now = moment(today).format("YYYY-MM-DD");
 		return new Promise(async (resolve, reject) => {
+			let produc = []
 			let prod = await db
 				.get()
 				.collection(collection.CART_COLLECTION)
@@ -358,31 +361,31 @@ module.exports = {
 							},
 						}
 					);
+				let newProd = {
+					_id: prod[i]._id,
+					item: prod[i].item,
+					quantity: prod[i].quantity,
+					canBeReturned: false,
+					isShipped: false,
+					isDelivered: false,
+					date: now,
+					status: "placed",
+					product:prod[i].product
+				};
+			 	produc.push(newProd);
 			}
 			// resolve(prod)
 			let status = order.payment === "cod" ? "placed" : "pending";
-			let today = new Date();
-			let now = moment(today).format("YYYY-MM-DD");
+			
 			let orderObj = {
 				deleveryDetails: address,
 				user: order.userId,
 				totalPrice: total,
 				paymentMethod: order.payment,
-				products:{
-					_id:prod._id,
-					item:prod.item,
-					quantity:prod.quantity,
-					productStatus:true,
-					status:"placed",
-					
-				},
+				products: produc,
 				status: status,
 				date: now,
 				orderValidity: true,
-				isShipped: false,
-				isDelivered: false,
-				payment: "pending",
-				canBeReturned: false,
 				firstPrice: final,
 				discountRate: rate,
 			};
@@ -390,10 +393,7 @@ module.exports = {
 				.collection(collection.ORDER_COLLECTION)
 				.insertOne(orderObj)
 				.then((responce) => {
-					db.get()
-						.collection(collection.CART_COLLECTION)
-						.remove({ user: objectId.ObjectId(order.userId) });
-
+					
 					resolve(responce.insertedId);
 				});
 		});
@@ -536,6 +536,7 @@ module.exports = {
 
 			instance.orders.create(options, function (err, order) {
 				if (err) {
+					
 					console.log("an error has occcourred", err);
 				} else {
 					resolve(order);
@@ -544,6 +545,7 @@ module.exports = {
 		});
 	},
 	verifyPayment: (details) => {
+		
 		return new Promise((resolve, reject) => {
 			var crypto = require("crypto");
 			var expectedSignature = crypto
@@ -553,13 +555,20 @@ module.exports = {
 
 			if (expectedSignature === details.payment.razorpay_signature) {
 				console.log("sucess");
-
+				
 				resolve();
 			} else {
 				console.log("failure");
-				reject();
+				reject(details.responce.receipt);
 			}
 		});
+	},
+	deleteCart:(Id)=>{
+		return new Promise((resolve,reject)=>{
+			db.get()
+				.collection(collection.CART_COLLECTION)
+				.remove({ user: objectId.ObjectId(Id) });
+		})
 	},
 	changePaymentStatus: (orderId) => {
 		return new Promise((resolve, reject) => {
@@ -830,4 +839,10 @@ module.exports = {
 			resolve();
 		});
 	},
+	removeInvalidOrders:()=>{
+		return new Promise(async(resolve,reject)=>{
+			await db.get().collection(collection.ORDER_COLLECTION).remove({status:"pending",paymentMethod:{$ne:"cod"}})
+			resolve()
+		})
+	}
 };

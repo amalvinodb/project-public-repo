@@ -132,7 +132,7 @@ router.get("/cart", isUserLoggedIn, async (req, res) => {
 router.get("/addToCart/:id", isUserLoggedIn, (req, res) => {
 
 	userHelper.addToCart(req.params.id, req.session.user._id).then((responsce) => {
-		res.json(responsce);
+		res.json({status:true});
 	});
 });
 router.post("/changeProductQuantity", (req, res, next) => {
@@ -183,7 +183,10 @@ router.post("/checkout", async (req, res) => {
 	let prod = userHelper.placeOrder(req.body, products, total, address,first,cuponRate).then((responce) => {
 		let order = responce
 		if(req.body.payment == 'cod'){
+			
+			
 			console.log("responce")
+			userHelper.deleteCart(req.body.userId)
 			res.json({ success: true,order:responce });
 		}else if(req.body.payment == 'razopay'){
 			console.log("razopy payment is online")
@@ -239,6 +242,7 @@ router.post("/checkout", async (req, res) => {
 		}else if(req.body.payment == 'wallet'){
 			let balance = userHelper.checkBalance(req.body.userId,total)
 			if(balance){
+				userHelper.deleteCart(req.body.userId)
 				res.json({route:'wallet',resp:true,responce})
 			}else{
 				res.json({route:'wallet',resp:false,responce})
@@ -288,6 +292,7 @@ router.get("/orderSucess", isUserLoggedIn,async (req, res) => {
 	res.render("sucess/orderSucess",{user,order});
 });
 router.get("/allorders", isUserLoggedIn, async (req, res) => {
+	await userHelper.removeInvalidOrders()
 	let orders = await userHelper.userOrders(req.session.user._id);
 	let user = req.session.user;
 	res.render("user/allOrders", { orders, user });
@@ -352,13 +357,17 @@ router.post("/changePassword", (req, res) => {
 });
 router.post('/verify-payment',(req,res)=>{
 	console.log("this is verify")
+	console.log(req.body)
+	let user = req.session.user._id
 	userHelper.verifyPayment(req.body).then(()=>{
 		console.log('payment was a success')
 		userHelper.changePaymentStatus(req.body.responce.receipt).then(()=>{
+			userHelper.deleteCart(user)
 			console.log("true")
 			res.json({status:true,order:req.body.responce.receipt})
 		})
 	}).catch((err)=>{
+		console.log(err)
 		console.log(err,"payment failure")
 		res.json({status:false})
 	})

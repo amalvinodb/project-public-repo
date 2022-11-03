@@ -12,7 +12,7 @@
               <span class="ms-1 d-none d-sm-inline">user</span>
             </a>
           </li>
-          
+
           <li>
             <a href="/user/cart" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
               style="width: 220px;background-color:blue">
@@ -72,14 +72,34 @@
                 <span id="{{this.product._id}}">{{this.quantity}}
                 </span>
 
-                <button class="btn btn-primary"
-                  onclick="chageQuantity('{{this._id}}','{{this.product._id}}',1)" id="plus">+</button>
+                <button class="btn btn-primary" onclick="chageQuantity('{{this._id}}','{{this.product._id}}',1)"
+                  id="plus">+</button>
               </td>
               {{!-- <td>{{this.price}}</td> --}}
-              <td><a class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')" role="button">Delete</a></td>
-
+              <td>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <i class="bi bi-trash"></i>
+                </button>
             </tr>
-
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <span class="text-danger">Are you sure you want to remove the product from cart</span>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger"
+                      onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             {{/each}}
 
           </tbody>
@@ -113,52 +133,52 @@
     chageQuantity(cartId, prodId, count) {
     let quantity = parseInt(document.getElementById(prodId).innerHTML)
 
-    if(quantity == 2 && count == -1){
+    if (quantity == 10 && count == -1) {
       checker = true
-    }else if(quantity<2){
+    } else if (quantity < 10) {
       checker = true
-    }else if(quantity == 2 && count == 1){
+    } else if (quantity == 10 && count == 1) {
       checker = false
     }
 
-    if(checker){
-       count = parseInt(count)
-    $.ajax({
-      url: "/user/changeProductQuantity",
-      data: {
-        cart: cartId,
-        product: prodId,
-        count: count,
-        quantity: quantity
-      }, method: 'post',
-      success:
-        (response) => {
-          if (response.removeProduct) {
-            alert("product have been removed")
-            location.reload()
-          } else {
-            document.getElementById(prodId).innerHTML = quantity + count
-            location.reload()
+    if (checker) {
+      count = parseInt(count)
+      $.ajax({
+        url: "/user/changeProductQuantity",
+        data: {
+          cart: cartId,
+          product: prodId,
+          count: count,
+          quantity: quantity
+        }, method: 'post',
+        success:
+          (response) => {
+            if (response.removeProduct) {
+              alert("product have been removed")
+              location.reload()
+            } else {
+              document.getElementById(prodId).innerHTML = quantity + count
+
+            }
           }
-        }
-    })
-    }else{
-      alert("maximum no of products is 2")
+      })
+    } else {
+      alert("maximum no of products is 10")
     }
-   
+
   }
 
 </script>
 <script>
-  function removeProduct(cartId,prodId){
+  function removeProduct(cartId, prodId) {
     $.ajax({
-      url:"/user/removeFromCart",
-      data:{
+      url: "/user/removeFromCart",
+      data: {
         cart: cartId,
         product: prodId,
       },
       method: 'post',
-      success:(response)=>{
+      success: (response) => {
         alert("product removed from cart")
         location.reload()
       }
@@ -166,7 +186,7 @@
   }
 </script>
 <script>
-$(document).ready( function () {
+  $(document).ready(function () {
     $('#table_id').DataTable();
-} );
+  });
 </script>

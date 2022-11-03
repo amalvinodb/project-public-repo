@@ -39,6 +39,7 @@ router.get("/", isAdminLoggedIn, async (req, res, next) => {
 	res.redirect("/admin/dashBoard");
 });
 router.get("/allOrders", isAdminLoggedIn, async (req, res) => {
+	await userHelper.removeInvalidOrders()
 	let orders = await adminHelper.getAllOrders();
 
 	res.render("admin/admin-orders", { admin: true, orders });
