@@ -4,10 +4,14 @@ const productHelper = require("../helpers/product_helpers"); //product collectio
 const catagory_helpers = require("../helpers/catagory_helpers");
 const user_helpers = require("../helpers/user_helpers");
 /* GET landing page. */
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
+	
 	let user = req.session.user;
+	if(user){
+		var cartCount = await user_helpers.getCartCount(req.session.user._id);
+	}
 	let admin = req.session.admin;
-	res.render("index", { user });
+	res.render("index", { user,cartCount });
 });
 router.get("/allProducts", async (req, res) => {
 	let page = parseInt(req.query.page) ;

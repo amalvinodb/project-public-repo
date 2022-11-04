@@ -22,6 +22,7 @@ module.exports = {
 			today = new Date();
 			now = moment(today).format("YYYY-MM-DD");
 			let code = "techpark_" + userData.Name + "_100";
+			userData.phone = "+91" + userData.phone
 			db.get()
 				.collection(collection.USER_COLLECTION)
 				.insertOne({

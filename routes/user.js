@@ -259,7 +259,8 @@ router.get('/Sucess',(req,res)=>{
 	const paymentId = req.query.paymentId
 	const total = req.session.totoal
 	const order = req.session.order
-	
+	let userId = req.session.user._id
+	userHelper.deleteCart(userId)
 	const execute_payment_json = {
 		"payer_id": payerId,
 		"transactions": [{
@@ -292,10 +293,11 @@ router.get("/orderSucess", isUserLoggedIn,async (req, res) => {
 	res.render("sucess/orderSucess",{user,order});
 });
 router.get("/allorders", isUserLoggedIn, async (req, res) => {
+	let cartCount = await userHelper.getCartCount(req.session.user._id);
 	await userHelper.removeInvalidOrders()
 	let orders = await userHelper.userOrders(req.session.user._id);
 	let user = req.session.user;
-	res.render("user/allOrders", { orders, user });
+	res.render("user/allOrders", { orders, user,cartCount });
 });
 router.get("/viewOrderDetails/:id", isUserLoggedIn, async (req, res) => {
 	let user = req.session.user;
@@ -373,10 +375,11 @@ router.post('/verify-payment',(req,res)=>{
 	})
 })
 router.get('/wishlist',isUserLoggedIn,async(req,res)=>{
+	let cartCount = await userHelper.getCartCount(req.session.user._id);
 	let user = req.session.user
 	let prod = await userHelper.getWishlist(req.session.user._id);
 
- res.render('user/wishlist',{user,prod})
+ res.render('user/wishlist',{user,prod,cartCount})
 })
 router.get('/addToWishlist',(req,res)=>{
 	let user = req.session.user
@@ -394,6 +397,7 @@ router.post('/removeFromWishlist',(req,res)=>{
 	});
 })
 router.get('/returnOrder',async (req,res)=>{
+	
 	let orderId = req.query.orderId
 	let user = req.session.user
 	let users = await userHelper.returnOrder(orderId,user)
