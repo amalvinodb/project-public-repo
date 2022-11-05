@@ -8,7 +8,12 @@
                             <div class="text-center">
                                 <h3 class="mb-5 fw-bold">User Sign in</h3>
                             </div>
+                            {{#if loginError}}
+                            <div class="alert alert-danger" role="alert">
+                                User dosenot exist!...
+                            </div>
 
+                            {{/if}}
                             <form action="/user/login" method="post" id="loginForm">
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
@@ -51,18 +56,20 @@
     }
 </style>
 <script>
-
-    $("#loginForm").validate({
-        rules: {
-            email: {
-                required: true,
-                email: true,
-                minlength: 5
-            },
-            password: {
-                required: true,
-                password: true
+    $(document).ready(function () {
+        $("#loginForm").validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true,
+                    minlength: 5
+                },
+                password: {
+                    required: true,
+                    password: true
+                }
             }
-        }
+        })
     })
+
 </script>

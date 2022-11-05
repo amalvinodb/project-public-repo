@@ -7,12 +7,12 @@
                         <div class="card-body p-5 text-center">
                             <h3 class="mb-5">enter your current password</h3>
                             <h4 class="md-5 text-primary">{{user.email}}</h4>
-                            <form action="/user/confirmUser" method="post">
+                            <form action="/user/confirmUser" method="post" id="confirmform">
                                 <!-- Email input -->
                               
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form2Example2">Password</label>
-                                    <input name="password" type="password" id="form2Example2" class="form-control" required/>
+                                    <input name="password" type="password" id="password" class="form-control" required/>
 
                                 </div>
                                 <input type="text" name="Id" value="{{user._id}}" hidden>
@@ -28,5 +28,17 @@
         </div>
         {{!-- {{>user-footer}} --}}
     </section>
-
 </section>
+<script>
+    $(document).ready(function(){
+        $('#confirmform').validate({
+            rules:{
+                password:{
+                    required:true,
+                    minlength:4,
+                    maxlength:10,
+                }
+            }
+        })
+    })
+</script>

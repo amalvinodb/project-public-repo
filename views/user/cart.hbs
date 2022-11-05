@@ -9,24 +9,24 @@
           <li class="nav-item">
             <a href="/user" class="nav-link text-white align-middle px-0">
               <i class="fs-4 bi-person-circle"></i>
-              <span class="ms-1 d-none d-sm-inline">user</span>
+              <span class="ms-1 d-none d-sm-inline">USER</span>
             </a>
           </li>
 
           <li>
             <a href="/user/cart" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
               style="width: 220px;background-color:blue">
-              <i class="fs-4 bi-cart3"></i> <span class="ms-1 d-none d-sm-inline">cart</span></a>
+              <i class="fs-4 bi-cart3"></i> <span class="ms-1 d-none d-sm-inline">CART</span></a>
           </li>
           <li>
             <a href="/user/wishlist" class="nav-link text-white px-0 align-middle">
               <i class="fs-4 bi-heart-fill"></i>
-              <span class="ms-1 d-none d-sm-inline">Wishlist</span></a>
+              <span class="ms-1 d-none d-sm-inline">WISHLIST</span></a>
           </li>
           <li>
             <a href="/user/allOrders" class="nav-link text-white px-0 align-middle">
               <i class="fs-4 bi-clipboard-data-fill"></i>
-              <span class="ms-1 d-none d-sm-inline">Orders</span>
+              <span class="ms-1 d-none d-sm-inline">ORDERS</span>
             </a>
           </li>
         </ul>
@@ -35,17 +35,17 @@
       </div>
     </div>
     <div class="col py-3">
-      <p class="fw-bold text-success fs-2 text-center">Cart</p>
+      <p class="fw-bold text-success fs-2 text-center">CART</p>
       <section>
         <table class="table" id="table_id">
           <thead>
             <tr>
-              <th scope="col">sino.</th>
-              <th scope="col">image</th>
-              <th scope="col">name</th>
-              <th scope="col">price</th>
-              <th scope="col">quantity</th>
-              <th scope="col">options</th>
+              <th scope="col">SiNo.</th>
+              <th scope="col">Image</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody>
@@ -54,24 +54,18 @@
             }}
 
             <tr>
-
               <th scope="row">{{inc
                 @index
                 }}</th>
-
               <th><img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
                   style="margin:0 auto; width: 50px;height: 50px;" /></th>
               <td>{{this.product.productName}}</td>
               <td>{{this.product.offerPrice}}</td>
-
               <td>
-
                 <button class="btn btn-primary"
                   onclick="chageQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>
-
                 <span id="{{this.product._id}}">{{this.quantity}}
                 </span>
-
                 <button class="btn btn-primary" onclick="chageQuantity('{{this._id}}','{{this.product._id}}',1)"
                   id="plus">+</button>
               </td>
@@ -86,11 +80,11 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Product From Cart</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <span class="text-danger">Are you sure you want to remove the product from cart</span>
+                    <span class="text-danger">Are you sure you want to remove the product from cart!..</span>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -154,7 +148,6 @@
         success:
           (response) => {
             if (response.removeProduct) {
-              alert("product have been removed")
               location.reload()
             } else {
               document.getElementById(prodId).innerHTML = quantity + count
@@ -163,7 +156,20 @@
           }
       })
     } else {
-      alert("maximum no of products is 10")
+      Toastify({
+        text: "maximum no of products is 10",
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function () { } // Callback after click
+      }).showToast();
+
     }
 
   }
@@ -179,14 +185,11 @@
       },
       method: 'post',
       success: (response) => {
-        alert("product removed from cart")
         location.reload()
+        
+
+
       }
     })
   }
-</script>
-<script>
-  $(document).ready(function () {
-    $('#table_id').DataTable();
-  });
 </script>

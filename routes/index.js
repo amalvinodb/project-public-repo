@@ -7,13 +7,16 @@ const user_helpers = require("../helpers/user_helpers");
 router.get("/", async (req, res, next) => {
 	
 	let user = req.session.user;
-	if(user){
+	if(req.session.user){
 		var cartCount = await user_helpers.getCartCount(req.session.user._id);
 	}
 	let admin = req.session.admin;
 	res.render("index", { user,cartCount });
 });
 router.get("/allProducts", async (req, res) => {
+	if(req.session.user){
+		var cartCount = await user_helpers.getCartCount(req.session.user._id);
+	}
 	let page = parseInt(req.query.page) ;
 	if(!page){
 		page=0
@@ -31,7 +34,7 @@ router.get("/allProducts", async (req, res) => {
 		}
 
 		catagory_helpers.getAllCatagories().then((catagories) => {
-			res.render("all-products", { user, products, catagories,pages });
+			res.render("all-products", { user, products, catagories,pages,cartCount });
 		});
 	} else if (cata) {
 		let products = await productHelper.filterCatagory(cata,page);
@@ -43,7 +46,7 @@ router.get("/allProducts", async (req, res) => {
 		}
 
 		catagory_helpers.getAllCatagories().then((catagories) => {
-			res.render("all-products", { user, products, catagories,pages });
+			res.render("all-products", { user, products, catagories,pages,cartCount });
 		});
 	} else if (sort) {
 		let products = await productHelper.sortCatagory(sort,page);
@@ -55,7 +58,7 @@ router.get("/allProducts", async (req, res) => {
 		}
 
 		catagory_helpers.getAllCatagories().then((catagories) => {
-			res.render("all-products", { user, products, catagories,pages });
+			res.render("all-products", { user, products, catagories,pages,cartCount });
 		});
 	} else {
 		productHelper.getAllProducts(page).then(async(products) => {
@@ -67,7 +70,7 @@ router.get("/allProducts", async (req, res) => {
 			}
 	
 			catagory_helpers.getAllCatagories().then((catagories) => {
-				res.render("all-products", { user, products, catagories,pages });
+				res.render("all-products", { user, products, catagories,pages,cartCount });
 			});
 		});
 	}

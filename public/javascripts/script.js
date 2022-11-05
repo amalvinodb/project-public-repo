@@ -5,7 +5,20 @@ function addToCart(prodId){
         method:'get',
         success:(response)=>{
             if(response.status){
-                alert('added')
+                Toastify({
+                    text: "PRODUCT ADDED TO CART",
+                    duration: 3000,
+                
+                    newWindow: true,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "center", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    onClick: function(){} // Callback after click
+                  }).showToast();
                 let count = $('#cartCount').html()
                 count = parseInt(count) + 1
                 $('#cartCount').html(count)
@@ -27,7 +40,19 @@ function addToWishlist(prodId){
         
         success:(respoce)=>{
             if(respoce.status){
-                alert('product have been added')
+                Toastify({
+                    text: "PRODUCT ADDED TO WISHLIST",
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "center", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    onClick: function(){} // Callback after click
+                  }).showToast();
             }else{
                 location.href = '/user/login'
             }
