@@ -8,7 +8,7 @@
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
           <li class="nav-item">
             <a href="/user" class="nav-link text-white align-middle px-0">
-             <i class="fs-4 bi-person-circle"></i>
+              <i class="fs-4 bi-person-circle"></i>
               <span class="ms-1 d-none d-sm-inline">user</span>
             </a>
           </li>
@@ -64,7 +64,8 @@
                   style="margin:0 auto; width: 50px;height: 50px;" /></th>
               <td>{{this.product.productName}}</td>
               <td>{{this.product.offerPrice}}</td>
-
+              <td> <button onclick="addToCart('{{this.product._id}}')" class="btn btn-success"><i
+                    class="bi bi-cart3"></i></button></td>
 
               {{!-- <td>{{this.price}}</td> --}}
               <td><a class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')"
@@ -76,13 +77,19 @@
 
           </tbody>
         </table>
-        <hr />
+   
 
 
       </section>
+      
     </div>
+    
   </div>
 </div>
+
+
+
+
 <script>
   function removeProduct(cartId, prodId) {
     $.ajax({
@@ -93,7 +100,7 @@
       },
       method: 'post',
       success: (response) => {
-       
+
         location.reload()
       }
     })

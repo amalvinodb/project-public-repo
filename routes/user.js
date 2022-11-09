@@ -182,17 +182,28 @@ router.post("/checkout", async (req, res) => {
 	let products = await userHelper.getProductList(req.body.userId);
 	let total = await userHelper.getTotal(req.body.userId);
 	if (req.body.cupon) {
-		var cuponRate = await cupon_helpers.findcupon(req.body.cupon);
-	} else {
-		var cuponRate = 0;
+		var cupon = await cupon_helpers.findcupon(req.body.cupon);
 	}
 
 	let first = total[0].total;
-	total[0].total = parseInt((total[0].total / 100) * (100 - cuponRate));
+	let rate = 0;
+	if (cupon) {
+		rate = cupon.offerRate;
+		if (first > cupon.amountAplicable) {
+			let temp = parseInt((total[0].total / 100) * cupon.offerRate);
+			if (temp < cupon.maxAmount) {
+				total[0].total = parseInt(total[0].total - temp);
+			} else {
 
+				total[0].total = parseInt(total[0].total - cupon.maxAmount);
+			}
+		}
+	}
+
+	let user = req.session.user;
 	let address = await userHelper.findSingleAddress(req.body.addressline);
 
-	let prod = userHelper.placeOrder(req.body, products, total, address, first, cuponRate).then((responce) => {
+	let prod = userHelper.placeOrder(req.body, user, total, address, first, rate).then(async (responce) => {
 		let order = responce;
 		if (req.body.payment == "cod") {
 			console.log("responce");
@@ -245,12 +256,14 @@ router.post("/checkout", async (req, res) => {
 				}
 			});
 		} else if (req.body.payment == "wallet") {
-			let balance = userHelper.checkBalance(req.body.userId, total);
+			let balance = await userHelper.checkBalance(req.body.userId, total);
+
 			if (balance) {
 				userHelper.deleteCart(req.body.userId);
-				res.json({ route: "wallet", resp: true, responce });
+				userHelper.changePaymentStatus(responce);
+				res.json({ route: "wallet", resp: true, id:responce });
 			} else {
-				res.json({ route: "wallet", resp: false, responce });
+				res.json({ route: "wallet", resp: false, id:responce });
 			}
 			//
 		}
@@ -290,8 +303,10 @@ router.get("/Sucess", (req, res) => {
 });
 router.get("/orderSucess", isUserLoggedIn, async (req, res) => {
 	let user = req.session.user;
-	let order = await userHelper.getSingleOrder(req.query.order);
 
+	let orderId = req.query.order;
+
+	let order = await userHelper.getSingleOrder(orderId);
 	res.render("sucess/orderSucess", { user, order });
 });
 router.get("/allorders", isUserLoggedIn, async (req, res) => {
@@ -305,15 +320,16 @@ router.get("/viewOrderDetails/:id", isUserLoggedIn, async (req, res) => {
 	let user = req.session.user;
 	let orderId = req.params.id;
 	await userHelper.returnValidity(orderId);
-	let address = await userHelper.getSingleOrder(orderId);
-	let orderDetails = await userHelper.getOrderProducts(orderId);
-	res.render("user/order-details", { orderDetails, user, address });
+	let order = await userHelper.getSingleOrder(orderId);
+
+	res.render("user/order-details", { user, order, orderId });
 });
 router.get("/cancelOrder/:id", async (req, res) => {
 	let orderId = req.params.id;
-	userHelper.cancelOrder(orderId);
+	await userHelper.cancelOrder(orderId);
 	let user = await userHelper.returnCash(orderId);
-	productHelper.resetQuantity(orderId);
+	await userHelper.cancelAllProducts(orderId);
+	await productHelper.resetQuantity(orderId);
 	res.redirect("/user/allOrders");
 });
 router.post("/removeFromCart", (req, res) => {
@@ -382,13 +398,14 @@ router.get("/wishlist", isUserLoggedIn, async (req, res) => {
 });
 router.get("/addToWishlist", (req, res) => {
 	let user = req.session.user;
+	console.log(user);
 	if (!user) {
 		res.json({ status: false });
+	} else {
+		userHelper.addToWishlist(user, req.query.prod).then((responsce) => {
+			res.json({ status: true });
+		});
 	}
-
-	userHelper.addToWishlist(user, req.query.prod).then((responsce) => {
-		res.json({ status: true });
-	});
 });
 router.post("/removeFromWishlist", (req, res) => {
 	userHelper.removeFromWishlist(req.body).then(async (responce) => {
@@ -399,15 +416,59 @@ router.get("/returnOrder", async (req, res) => {
 	let orderId = req.query.orderId;
 	let user = req.session.user;
 	let users = await userHelper.returnOrder(orderId, user);
+	let usere = await userHelper.returnCash(orderId);
+	await userHelper.returnAllProducts(orderId);
 	req.session.user = users;
 	res.redirect("/user/allOrders");
 });
 router.post("/applyCupon", async (req, res) => {
-	let cuponRate = await cupon_helpers.findcupon(req.body.code);
-	let final = parseInt((req.body.total / 100) * (100 - cuponRate));
-	console.log(cuponRate, final);
-	res.json({ status: true, cuponRate, final });
+	let cupon = await cupon_helpers.findcupon(req.body.code);
+	let chk = true;
+
+	let final = req.body.total;
+	let rate = 0;
+	if (req.body.total > parseInt(cupon.amountAplicable)) {
+		let temp = parseInt((req.body.total / 100) * cupon.offerRate);
+		if (temp < cupon.maxAmount) {
+			rate = parseInt(cupon.offerRate);
+			final = parseInt(req.body.total - temp);
+		} else {
+			rate = parseFloat(cupon.maxAmount / (req.body.total / 100));
+			final = parseInt(req.body.total - cupon.maxAmount);
+		}
+	}
+	console.log(rate, final);
+	res.json({ status: true, rate, final });
 });
+
+router.post("/cancelProduct", async (req, res) => {
+	let order = await userHelper.getSingleOrder(req.body.order);
+	let user = req.session.user;
+	if (order.discountRate != 0) {
+		res.json({ status: false });
+	} else {
+		await userHelper.cancelProduct(req.body, user);
+		await userHelper.checkOrderStatus();
+		res.json({ status: true });
+	}
+});
+router.post("/returnProduct", async (req, res) => {
+	let order = await userHelper.getSingleOrder(req.body.order);
+	let user = req.session.user;
+	if (order.discountRate != 0) {
+		res.json({ status: false });
+	} else {
+		await userHelper.returnProduct(req.body, user);
+		await userHelper.checkOrderStatus();
+		res.json({ status: true });
+	}
+});
+router.get('/wallet',isUserLoggedIn,async(req,res)=>{
+	let user = req.session.user
+	res.render('user/wallet',{user})
+})
+
+
 
 // to check if the user is logged in
 function isUserLoggedIn(req, res, next) {

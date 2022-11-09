@@ -12,16 +12,14 @@
                                 </div>
                                 {{/each}}
                             </div>
-                            <div class="text-center p-4 " id="main-image"> <img src="{{data.images.[0]}}"
-                                    style="max-width: 400px;  max-height:600px;" id="mainmg" class="block__pic" /> </div>
+                            <div class="text-center m-4 " id="main-image" style="width: 400px;  height:250px;"> <img src="{{data.images.[0]}}"
+                                    style="max-width: 400px;  max-height:250px;" id="mainmg" class="block__pic" />
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="product p-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span
-                                        class="ml-1"></span> </div> <i class="fa fa-shopping-cart text-muted"></i>
-                            </div>
+
                             <div class="mt-4 mb-3">
                                 <span class="text-uppercase text-muted brand">{{catagory.catagoryName}}</span>
                                 <h5 class="text-uppercase">{{data.productName}}</h5>
@@ -29,22 +27,125 @@
                                         class="act-price text-danger bi-currency-rupee">{{data.offerPrice}}</span>
                                 </div>
                             </div>
-                            <p class="about">{{data.discription}}</p>
+
                             <p>{{catagory.catagoryDetail}}</p>
                             <p class="text-success"><span>{{data.quantity}}</span> units left</p>
                             <div class="cart mt-4 align-items-center"> <button onclick="addToCart('{{data._id}}')"
                                     class="btn btn-primary">add to cart</button>
                                 <a onclick="addToWishlist('{{this._id}}')" class="btn btn-danger">Wishlist</a>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="m-4 px-4">
+                    <h4>Discription:</h4>
+                    <p class="about">{{data.discription}}</p>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
+<section class="footer">
+    <div class="r">
+        <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
+            <section class="d-flex justify-content-between p-4" style="background-color: #6351ce">
+                <div class="me-5">
+                    <span>* This is a trial websit that is made as a personal project please donot make any
+                        transactions..</span>
+                </div>
+                <div>
+                    <a href="https://www.facebook.com/natsu.av" target="_blank" class="text-white me-4">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://twitter.com/Amalvin54535076" target="_blank" class="text-white me-4">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+
+                    <a href="https://www.instagram.com/_extream_bencher/" target="_blank" class="text-white me-4">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/amal-vinod-5454511a0/" target="_blank" class="text-white me-4">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/amalvinodb" target="_blank" class="text-white me-4">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </section>
+            <section class="">
+                <div class="container text-center text-md-start mt-5">
+                    <div class="row mt-3">
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Tech Park</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                This is a websit that i made using nodejs as my server side language.
+                                Using mongodb as my database which is a nosql database. This is my very
+                                first complete website with db and a serverside language. hbs was used as
+                                a view engine. i did not use any fornt end stack.
+                            </p>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Navigation</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="/allProducts" class="text-white">All Products</a>
+                            </p>
+                            <p>
+                                <a href="/" class="text-white">Home</a>
+                            </p>
+
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Menu</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="/user" class="text-white">Profile</a>
+                            </p>
+                            <p>
+                                <a href="/user/cart" class="text-white">Cart</a>
+                            </p>
+                            <p>
+                                <a href="/user/wishlist" class="text-white">Wishlist</a>
+                            </p>
+                            <p>
+                                <a href="/user/allOrders" class="text-white">Orders</a>
+                            </p>
+                            <p>
+                                <a href="/user/logout" class="text-danger">logout</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <h6 class="text-uppercase fw-bold">Contact</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p><i class="fas fa-home mr-3"></i> Thodupuzha,Idukki,Kerala</p>
+                            <p><i class="fas fa-envelope mr-3"></i> amalvinodb2000@gmail.com</p>
+                            <p><i class="fas fa-phone mr-3"></i> +918157876820</p>
+                            <p><i class="fas fa-print mr-3"></i> +918136909633</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+                © 2020 Copyright:
+                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+            </div>
+        </footer>
+    </div>
+</section>
 <script>
     function changeimg(dat) {
         document.getElementById('mainmg').src = dat
     }
 </script>
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>

@@ -57,7 +57,7 @@ module.exports = {
         return new Promise(async(resolve,reject)=>{
             let cupon = await db.get().collection(collection.COMMON_CUPON_COLLECTION).findOne({cuponCode:cupcode})
             if(cupon){
-                resolve(cupon.offerRate)
+                resolve(cupon)
             }else{
                 resolve(0)
             }

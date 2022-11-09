@@ -10,8 +10,9 @@ router.get("/", async (req, res, next) => {
 	if(req.session.user){
 		var cartCount = await user_helpers.getCartCount(req.session.user._id);
 	}
-	let admin = req.session.admin;
-	res.render("index", { user,cartCount });
+	let product = await productHelper.landingProducts()
+	let offer = await productHelper.bestOffer()
+	res.render("index", { user,cartCount,product,offer });
 });
 router.get("/allProducts", async (req, res) => {
 	if(req.session.user){

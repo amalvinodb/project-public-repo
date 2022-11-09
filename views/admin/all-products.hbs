@@ -9,7 +9,7 @@
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li>
                         <a href="/admin/dashBoard?time=1" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">dash board</span></a>
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">Dash Board</span></a>
                     </li>
                     <li>
                         <a href="/admin/allOrders" class="nav-link text-dark align-middle px-0">
@@ -23,28 +23,28 @@
                     <li>
                         <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
                             <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Manage
-                                catagories</span></a>
+                                Catagories</span></a>
                     </li>
                     <li>
                         <a href="/admin/allUsers" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Manage users</span></a>
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Manage Users</span></a>
                     </li>
 
                     <li>
                         <a href="/admin/report?ext=0" class="nav-link text-dark text-primary px-0 align-middle">
-                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">report</span> </a>
+                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">Report</span> </a>
                     </li>
                     <li>
                         <a href="/admin/cupon" class="nav-link text-dark px-0 align-middle">
-                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">cupons</span> </a>
+                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">Cupons</span> </a>
                     </li>
                      <li>
                         <a href="/admin/offers" class="nav-link text-dark text-primary px-0 align-middle">
-                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">offers</span>
+                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">Offers</span>
                         </a>
                     </li>
                     <li><a class="text-danger nav-link px-0 align-middle" href="/admin/logout"> <i
-                                class="bi bi-box-arrow-left"></i> Sign out</a></li>
+                                class="bi bi-box-arrow-left"></i> Signout</a></li>
                 </ul>
                 <hr>
                 
@@ -57,15 +57,15 @@
                 <table class="table" id="table_id">
                     <thead>
                         <tr>
-                            <th scope="col" >index</th>
-                            <th scope="col">image</th>
-                            <th scope="col">product name</th>
-                            <th scope="col">discription</th>
-                            <th scope="col">price</th>
-                            <th scope="col">product Offer</th>
-                            <th scope="col">active Offer</th>
-                            <th scope="col">catagories</th>
-                            <th scope="col">option</th>
+                            <th scope="col" >Index</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Product Offer</th>
+                            <th scope="col">Active Offer</th>
+                            <th scope="col">Catagories</th>
+                            <th scope="col">Options</th>
 
                         </tr>
                     </thead>
@@ -76,13 +76,11 @@
                             <td>
                                 {{#each this.images}}
                                 <img src="{{this}}" class="card-img-top" alt="..."
-                                    style="margin:0 auto; width: 50px;height: 50px;">
+                                    style="margin:0 auto; width: 30px;height: 50px;">
                                     {{/each}}
                                     </td>
                             <td>{{this.productName}}</td>
-                            <td
-                                style=" white-space: nowrap;max-width: 50px; overflow: hidden;text-overflow: ellipsis; ">
-                                {{this.discription}}</td>
+                           <td>{{this.quantity}}</td>
                             <td> <del>{{this.price}}</del> {{this.offerPrice}}</td>
                             <td>{{this.offerRate}}</td>
                             <td>{{this.activeOffer}}</td>

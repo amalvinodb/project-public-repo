@@ -75,10 +75,25 @@ module.exports = {
 		});
 	},
 	shipOrder: (orderId) => {
-		return new Promise((resolve, reject) => {
+		return new Promise(async(resolve, reject) => {
 			let today = new Date()
 			let now = moment(today).format('YYYY-MM-DD')
-			db.get()
+			let order = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id:objectId.ObjectId(orderId)})
+		
+			let len = order.products.length
+			for(i=0;i<len;i++){
+				if(order.products[i].status == "placed" ){
+					await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(orderId),"products.item":objectId.ObjectId(order.products[i].item)},{
+						$set:{
+							"products.$.status":"shipped",
+							"products.$.isShipped":true,
+							"products.$.shippingDate":now,
+						}
+					})
+				}
+			}
+			if(order.status == "placed"){
+				await db.get()
 				.collection(collection.ORDER_COLLECTION)
 				.updateOne(
 					{ _id: objectId.ObjectId(orderId) },
@@ -90,17 +105,35 @@ module.exports = {
 						},
 					}
 				)
-				.then((response) => {
+			}
+			
+				
 					resolve();
-				});
+			
 		});
 	},
 	deliverOrder: (orderId) => {
-		return new Promise((resolve, reject) => {
+		return new Promise(async(resolve, reject) => {
 			let today = new Date()
 			let expairy = moment(today).add(7,"days").format('YYYY-MM-DD')
 			let now = moment(today).format('YYYY-MM-DD')
-			db.get()
+			let order = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id:objectId.ObjectId(orderId)})
+		
+			let len = order.products.length
+			for(i=0;i<len;i++){
+				if(order.products[i].status == "shipped" ){
+					await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(orderId),"products.item":objectId.ObjectId(order.products[i].item)},{
+						$set:{
+							"products.$.status":"delivered",
+							"products.$.isDelivered":true,
+							"products.$.deliveryDate":now,
+							"products.$.returnExpairy":expairy,
+						}
+					})
+				}	
+			}
+			if(order.status == "shipped"){
+				await db.get()
 				.collection(collection.ORDER_COLLECTION)
 				.updateOne(
 					{ _id: objectId.ObjectId(orderId) },
@@ -115,72 +148,25 @@ module.exports = {
 						},
 					}
 				)
-				.then((response) => {
+				if(order.paymentMethod == "cod"){
+					await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(orderId)},{
+						$set:{
+							payment:"payed the amount",
+						}
+					})
+				}
+			}
+			
+				
 					resolve();
-				});
+				
 		});
 	},
-	cancelOrder: (orderId) => {
-		return new Promise(async (resolve, reject) => {
-			await db
-				.get()
-				.collection(collection.ORDER_COLLECTION)
-				.updateOne(
-					{ _id: objectId.ObjectId(orderId) },
-					{
-						$set: {
-							status: "canseled",
-							orderValidity: false,
-							cancalationDate: new Date(),
-						},
-					}
-				);
-		}).then((response) => {
-			resolve();
-		});
-	},
+	
 	salesReport: (start,end) => {
 		return new Promise(async (resolve, reject) => {
-			let orderDelivered= await db.get().collection(collection.ORDER_COLLECTION).find({date:{$gte:start,$lte:end},status:'delivered'}).toArray()
-			let orderShipped= await db.get().collection(collection.ORDER_COLLECTION).find({date:{$gte:start,$lte:end},status:"shipped"}).toArray()
-			let orderPlaced= await db.get().collection(collection.ORDER_COLLECTION).find({date:{$gte:start,$lte:end},status:"placed"}).toArray()
-			let cancelOrder=await db.get().collection(collection.ORDER_COLLECTION).find({status:'canseled',date:{$gte:start,$lte:end}}).toArray()
-			let cod =await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"cod"}).toArray()
-			let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({date:{$gte:start,$lte:end}}).toArray()
-			let users = await db.get().collection(collection.USER_COLLECTION).find({date:{$gte:start,$lte:end}}).toArray()
-			let totalAmount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-					{
-						$match: { $and: [{ status: { $ne: "canseled" } }, { payment: { $ne: "pending" } },{date:{$gte:start,$lte:end}}] },
-					},
-					{
-						$project: {
-							_id: 0,
-							totalPrice: 1,
-						},
-					}
-						
-					
-				])
-				.toArray();
-
-			let i = totalAmount.length;
-			
-			let sum = 0;
-			for (j = 0; j < i; j++) {
-				sum = sum + totalAmount[j].totalPrice[0].total;
-			}
-			let data = {
-				totalSalesAmount:sum,
-				delivered:orderDelivered.length,
-				placed:orderPlaced.length,
-				shipped:orderShipped.length,
-				cancel:cancelOrder.length,
-				allOrders:orderTotal.length,
-				codOrders:cod.length,
-				user:users.length,
-			}
-		
-			resolve(data)
+			let orderDelivered= await db.get().collection(collection.ORDER_COLLECTION).find({date:{$gte:start,$lte:end},status:'delivered'}).sort({date:1}).toArray()
+			resolve(orderDelivered)
 		});
 	},
 	dashboard:()=>{
@@ -232,14 +218,14 @@ module.exports = {
 			let product =  await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectId.ObjectId(prodId)})
 		
 			let catagory = await db.get().collection(collection.CATAGORY_COLLECTION).findOne({_id:objectId.ObjectId(product.catagory)})
-			console.log(catagory)
+	
 			if(product.offerRate == 0 && catagory.catagoryOfferRate == 0){
 				checker = false
 			}else{
 				checker = true
 			}
 			if(product.offerRate<=catagory.catagoryOfferRate){
-				console.log('hai')
+		
 				let active = catagory.catagoryOfferRate;
 				let finalPrice = parseInt((product.price/100)*(100-active))
 				await db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId.ObjectId(prodId)},{
@@ -250,7 +236,7 @@ module.exports = {
 					}
 				}) 
 			}else{
-				console.log('hello') 
+		
 				let active = product.offerRate;
 				let finalPrice = parseInt((product.price/100)*(100-active))
 				await db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId.ObjectId(prodId)},{
@@ -270,6 +256,40 @@ module.exports = {
 			let products =await db.get().collection(collection.PRODUCT_COLLECTION).find({isProductOfferActive:true}).toArray()
 			resolve(products)
 		})
+	},
+	shipProduct:(data)=>{
+	
+		return new Promise(async(resolve,reject)=>{
+			await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(data.order),"products.item":objectId.ObjectId(data.prodId)},{
+				$set:{
+					"products.$.status":"shiped",
+					"products.$.isShipped":true,
+				}
+			})
+			await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(data.order)},{
+				$set:{
+					status:'shipped'
+				}
+			})
+			resolve()
+		})
+	},
+	deliverProduct:(data)=>{
+		return new Promise(async(resolve,reject)=>{
+			await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(data.order),"products.item":objectId.ObjectId(data.prodId)},{
+				$set:{
+					"products.$.status":"delivered",
+					"products.$.isDelivered":true,
+				}
+			})
+			await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId.ObjectId(data.order)},{
+				$set:{
+					status:"delivered"
+				}
+			})
+			resolve()
+		})
 	}
+
 	
 };

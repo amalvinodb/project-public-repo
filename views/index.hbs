@@ -1,4 +1,4 @@
-<section>
+<section style="position:static">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
@@ -10,94 +10,484 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/images/banner/image01.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
+                <img src="https://res.cloudinary.com/dzmqstses/image/upload/v1667796889/this%20folder/pexels-lucie-liz-3165335_lobarw.jpg"
+                    class="d-block w-100 image" alt="...">
+                <div class="carousel-caption d-none d-md-block" style="margin-bottom:400px">
+                    <h5 style="font-size: 50px; font-weight:800;text-shadow: 2px 2px #FF0000;" class="text-light">Power
+                        at your finger tips</h5>
+
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="/images/banner/image02.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
+                <img src="https://res.cloudinary.com/dzmqstses/image/upload/v1667796973/this%20folder/pexels-yurii-hlei-1365795_mtjwtk.jpg"
+                    class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block" style="margin-bottom:400px">
+                    <h5 style="font-size: 50px; font-weight:800;text-shadow: rgb(255, 255, 255) 1px 0 10px;">Future of
+                        Gamming</h5>
+
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="/images/banner/image03.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
+                <img src="https://res.cloudinary.com/dzmqstses/image/upload/v1667797063/this%20folder/pexels-ron-lach-7858742_wnwvxc.jpg"
+                    class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block " style="margin-bottom:300px">
+                    <h5 style="font-size: 50px; font-weight:800;"> <span class="text-dark">Stunning</span> & sharp </h5>
+
                 </div>
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
             data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            {{!-- <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span> --}}
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
             data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            {{!-- <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span> --}}
         </button>
     </div>
 </section>
-<section class="contain">
-    <p class="text-center mt-5 fs-1 fw-bold text-success">WHAT WE DO?..</p>
-    <p class="text-center mt-3"> It is a long established fact that a reader will be distracted by the readable content
-        of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-        distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.
-        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a
-        search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over
-        the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-</section>
-<section class="contain mt-5">
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+<section class="container my-5 pt-5 ">
+    <div class="bg-light py-3 px-3">
+        <strong>Best Offers%</strong>
+    </div>
+    <div class="row">
+        {{#if product}}
+        {{#each product}}
+        <div class="col-md-3">
+            <div class="wsk-cp-product">
+                <div class="wsk-cp-img">
+                    <a href="/item/{{this._id}}"><img src="{{this.images.[0]}}" alt="Product"
+                            class="img-responsive" /></a>
+                </div>
+                <div class="wsk-cp-text">
+                    <div class="category">
+                        <span onclick="addToCart('{{this._id}}')" class="btn"><i class="bi bi-cart3"></i></span>
+                    </div>
+                    <div class="title-product">
+                        <a href="/item/{{this._id}}" class="text-dark text-decoration-none">
+                            <h3>{{this.productName}}</h3>
+                        </a>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="wcf-left"><span class="price"><i class="bi bi-currency-rupee"></i>
+                                {{#if this.isOfferActive}}
+                                <span class="text-danger"><del>{{this.price}}</del></span>
+                                {{this.offerPrice}}
+                                <span class="text-success">({{this.activeOffer}}% OFF)</span>
+                                {{else}}
+                                {{this.offerPrice}}
+                                {{/if}}
+
+                            </span>
+                        </div>
+
+                        <div class="wcf-right mx-2"><a onclick="addToWishlist('{{this._id}}')" class="buy-btn"><i
+                                    class="bi bi-heart-fill"></i></a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
+        {{/each}}
+        {{else}}
+        <h3 class="px-3">Cannot find any products</h3>
+        {{/if}}
 
     </div>
+
+
+
 </section>
+<section class="container my-5 py-5">
+
+
+
+    <div class="bg-light py-3 px-3">
+        <strong>Best Prices</strong>
+    </div>
+    <div class="row">
+        {{#each offer}}
+        <div class="col-md-3">
+            <div class="wsk-cp-product">
+                <div class="wsk-cp-img">
+                    <a href="/item/{{this._id}}"><img src="{{this.images.[0]}}" alt="Product"
+                            class="img-responsive" /></a>
+                </div>
+                <div class="wsk-cp-text">
+                    <div class="category">
+                        <span onclick="addToCart('{{this._id}}')" class="btn"><i class="bi bi-cart3"></i></span>
+                    </div>
+                    <div class="title-product">
+                        <a href="/item/{{this._id}}" class="text-dark text-decoration-none">
+                            <h3>{{this.productName}}</h3>
+                        </a>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="wcf-left"><span class="price"><i class="bi bi-currency-rupee"></i>
+                                {{#if this.isOfferActive}}
+                                <span class="text-danger"><del>{{this.price}}</del></span>
+                                {{this.offerPrice}}
+                                <span class="text-success">({{this.activeOffer}}% OFF)</span>
+                                {{else}}
+                                {{this.offerPrice}}
+                                {{/if}}
+
+                            </span>
+                        </div>
+
+                        <div class="wcf-right mx-2"><a onclick="addToWishlist('{{this._id}}')" class="buy-btn"><i
+                                    class="bi bi-heart-fill"></i></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+
+</section>
+<section class="footer">
+    <div class="r">
+        <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
+            <section class="d-flex justify-content-between p-4" style="background-color: #6351ce">
+                <div class="me-5">
+                    <span>* This is a trial websit that is made as a personal project please donot make any
+                        transactions..</span>
+                </div>
+                <div>
+                    <a href="https://www.facebook.com/natsu.av" target="_blank" class="text-white me-4">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://twitter.com/Amalvin54535076" target="_blank" class="text-white me-4">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                 
+                    <a href="https://www.instagram.com/_extream_bencher/" target="_blank" class="text-white me-4">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/amal-vinod-5454511a0/" target="_blank" class="text-white me-4">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/amalvinodb" target="_blank" class="text-white me-4">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </section>
+            <section class="">
+                <div class="container text-center text-md-start mt-5">
+                    <div class="row mt-3">
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Tech Park</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                This is a websit that i made using nodejs as my server side language.
+                                Using mongodb as my database which is a nosql database. This is my very
+                                first complete website with db and a serverside language. hbs was used as 
+                                a view engine. i did not use any fornt end stack.
+                            </p>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Navigation</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="/allProducts" class="text-white">All Products</a>
+                            </p>
+                            <p>
+                                <a href="/" class="text-white">Home</a>
+                            </p>
+                           
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Menu</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="/user" class="text-white">Profile</a>
+                            </p>
+                            <p>
+                                <a href="/user/cart" class="text-white">Cart</a>
+                            </p>
+                            <p>
+                                <a href="/user/wishlist" class="text-white">Wishlist</a>
+                            </p>
+                            <p>
+                                <a href="/user/allOrders" class="text-white">Orders</a>
+                            </p>
+                            <p>
+                                <a href="/user/logout" class="text-danger">logout</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <h6 class="text-uppercase fw-bold">Contact</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p><i class="fas fa-home mr-3"></i> Thodupuzha,Idukki,Kerala</p>
+                            <p><i class="fas fa-envelope mr-3"></i> amalvinodb2000@gmail.com</p>
+                            <p><i class="fas fa-phone mr-3"></i> +918157876820</p>
+                            <p><i class="fas fa-print mr-3"></i> +918136909633</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+                © 2020 Copyright:
+                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+            </div>
+        </footer>
+    </div>
+</section>
+
+
+
+
+<style>
+    li {
+        list-style: none;
+
+    }
+
+    a {
+        text-decoration: none;
+
+    }
+
+    @import url('https://fonts.googleapis.com/css?family=Muli:400,400i,700,700i');
+
+
+
+
+    .wsk-cp-product {
+        background: #fff;
+        padding: 15px;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        position: relative;
+        margin: 20px auto;
+    }
+
+    .wsk-cp-img {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        transform: translate(-50%);
+        -webkit-transform: translate(-50%);
+        -ms-transform: translate(-50%);
+        -moz-transform: translate(-50%);
+        -o-transform: translate(-50%);
+        -khtml-transform: translate(-50%);
+        width: 100%;
+        padding: 15px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .wsk-cp-img img {
+        width: 100%;
+        transition: all 0.2s ease-in-out;
+        border-radius: 6px;
+    }
+
+    .wsk-cp-product:hover .wsk-cp-img {
+        top: -40px;
+    }
+
+    .wsk-cp-product:hover .wsk-cp-img img {
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    }
+
+    .wsk-cp-text {
+        padding-top: 100%;
+    }
+
+    .wsk-cp-text .category {
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 5px;
+        margin-bottom: 45px;
+        position: relative;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .wsk-cp-text .category>* {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -khtml-transform: translate(-50%, -50%);
+
+    }
+
+    .wsk-cp-text .category>span {
+        padding: 12px 30px;
+        border: 1px solid #313131;
+        background: #212121;
+        color: #fff;
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+        border-radius: 27px;
+        transition: all 0.05s ease-in-out;
+
+    }
+
+    .wsk-cp-product:hover .wsk-cp-text .category>span {
+
+
+        box-shadow: none;
+        padding: 11px 28px;
+    }
+
+    .wsk-cp-product:hover .wsk-cp-text .category {
+        margin-top: 0px;
+    }
+
+    .wsk-cp-text .title-product {
+        text-align: center;
+    }
+
+    .wsk-cp-text .title-product h3 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 15px auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+
+    .wsk-cp-text .description-prod p {
+        margin: 0;
+    }
+
+    /* Truncate */
+    .wsk-cp-text .description-prod {
+        text-align: center;
+        width: 100%;
+        height: 62px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        margin-bottom: 15px;
+    }
+
+    .card-footer {
+        padding: 25px 0 5px;
+        border-top: 1px solid #ddd;
+    }
+
+    .card-footer:after,
+    .card-footer:before {
+        content: '';
+        display: table;
+    }
+
+    .card-footer:after {
+        clear: both;
+    }
+
+    .card-footer .wcf-left {
+        float: left;
+
+    }
+
+    .card-footer .wcf-right {
+        float: right;
+    }
+
+    .price {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    a.buy-btn {
+        display: block;
+        color: #212121;
+        text-align: center;
+        font-size: 18px;
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        border-radius: 50%;
+        border: 1px solid #212121;
+        transition: all 0.2s ease-in-out;
+    }
+
+    a.buy-btn:hover,
+    a.buy-btn:active,
+    a.buy-btn:focus {
+        border-color: #FF9800;
+        background: #FF9800;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .wsk-btn {
+        display: inline-block;
+        color: #212121;
+        text-align: center;
+        font-size: 18px;
+        transition: all 0.2s ease-in-out;
+        border-color: #FF9800;
+        background: #FF9800;
+        padding: 12px 30px;
+        border-radius: 27px;
+        margin: 0 5px;
+    }
+
+    .wsk-btn:hover,
+    .wsk-btn:focus,
+    .wsk-btn:active {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .red {
+        color: #F44336;
+        font-size: 22px;
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    @media screen and (max-width: 991px) {
+        .wsk-cp-product {
+            margin: 40px auto;
+            max-width: 300px;
+        }
+
+        .wsk-cp-product .wsk-cp-img {
+            top: -10px;
+        }
+
+        .wsk-cp-product .wsk-cp-img img {
+            box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+        }
+
+        .wsk-cp-product .wsk-cp-text .category>span {
+            border-color: #ddd;
+            box-shadow: none;
+            padding: 11px 28px;
+        }
+
+        .wsk-cp-product .wsk-cp-text .category {
+            margin-top: 0px;
+        }
+
+        a.buy-btn {
+            border-color: #FF9800;
+            background: #FF9800;
+            color: #fff;
+        }
+    }
+</style>

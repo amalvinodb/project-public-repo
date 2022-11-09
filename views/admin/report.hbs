@@ -9,8 +9,8 @@
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li>
                         <a href="/admin/dashBoard?time=1" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">dash
-                                board</span></a>
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">Dash
+                                Board</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="/admin/allOrders" class="nav-link text-dark align-middle px-0">
@@ -25,31 +25,31 @@
                     <li>
                         <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
                             <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Manage
-                                catagories</span></a>
+                                Catagories</span></a>
                     </li>
                     <li>
                         <a href="/admin/allUsers" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Manage users</span></a>
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Manage Users</span></a>
                     </li>
 
                     <li>
                         <a href="/admin/report?ext=0"
                             class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
                             style="width: 220px;background-color:blue">
-                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">report</span>
+                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">Report</span>
                         </a>
                     </li>
                     <li>
                         <a href="/admin/cupon" class="nav-link text-dark px-0 align-middle">
-                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">cupons</span> </a>
+                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">Cupons</span> </a>
                     </li>
                     <li>
                         <a href="/admin/offers" class="nav-link text-dark text-primary px-0 align-middle">
-                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">offers</span>
+                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">Offers</span>
                         </a>
                     </li>
                     <li><a class="text-danger nav-link px-0 align-middle" href="/admin/logout"> <i
-                                class="bi bi-box-arrow-left"></i> Sign out</a></li>
+                                class="bi bi-box-arrow-left"></i> Signout</a></li>
                 </ul>
                 <hr>
 
@@ -57,26 +57,43 @@
         </div>
         <div class="col py-3">
             <section class="contain">
-                <p class="text-center mt-5 fs-1 fw-bold text-success">sales report</p>
+                <p class="text-center mt-5 fs-1 fw-bold text-success">Sales Report</p>
                 <div>
                     <div class="row">
-                        <div class="col-md-2 mb-2">
+                        <div class="col-md-1 mb-2">
+                            <a href="/admin/report?frame=1" class="btn btn-primary">Today</a>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/admin/report?frame=7" class="btn btn-primary">Week</a>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/admin/report?frame=30" class="btn btn-primary">month</a>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/admin/report?frame=365" class="btn btn-primary">year</a>
+                        </div>
+
+                        <div class="col-md-2 mb-2 ">
+
                             <div class="form-outline">
-                                <input name="productName" type="date" id="startDate"
-                                    class="form-control form-control-lg" />
-                                <label class="form-label" for="firstName">from</label>
+                                <input name="start" type="date" id="startDate" class="form-control form-control-lg" />
+                                <label class="form-label" for="firstName">From</label>
                             </div>
                         </div>
                         <div class="col-md-2 mb-2">
                             <div class="form-outline">
-                                <input name="productName" type="date" id="endDate"
-                                    class="form-control form-control-lg" />
-                                <label class="form-label" for="firstName">to</label>
+                                <input name="end" type="date" id="endDate" class="form-control form-control-lg" />
+                                <label class="form-label" for="firstName">To</label>
                             </div>
                         </div>
-                        <div>
-                            <div class="btn btn-primary" onclick="(filterDate())">submit</div>
+                        <div class="col-md-2 mb-2">
+
+                            <div class="btn btn-primary" onclick="(filterDate())">Submit</div>
+
                         </div>
+
+
+
                     </div>
                 </div>
                 <p>
@@ -88,80 +105,35 @@
                         <div>
                             <h2 class="text-center fw-bold ">order report</h2>
                         </div>
-                        <div>
-                            <table class="table" id="table">
+                        <div class="px-4">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th >#</th>
+                                        <th >Order Id</th>
+                                        <th >User Name</th>
+                                        <th >Email</th>
+                                        <th>Total</th>
+                                        <th>Order Date</th>
+                                        <th>Discount</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
+                                    {{#each data}}
                                     <tr>
-                                        <td>#</td>
-                                        <td>type</td>
-                                        <td>numbers</td>
+                                        <th >{{inc @index}}</th>
+                                        <td>{{this._id}}</td>
+                                        <td>{{this.userName}}</td>
+                                        <td>{{this.userEmail}}</td>
+                                        <td>{{this.totalPrice.[0].total}}</td>
+                                        <td>{{this.date}}</td>
+                                        <td>{{this.discountRate}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>total sales</td>
-                                        <td id="ts"> {{data.totalSalesAmount}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>total orders delivered</td>
-                                        <td id="tod">{{data.delivered}}</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>total orders placed</td>
-                                        <td id="top"> {{data.placed}}</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>orders shipped</td>
-                                        <td id="os"> {{data.shipped}} </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>orders canceled</td>
-                                        <td id="oc"> {{data.cancel}} </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>all orders</td>
-                                        <td id="ao"> {{data.allOrders}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>cash orders</td>
-                                        <td id="co"> {{data.codOrders}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>no of users</td>
-                                        <td id="nou"> {{data.user}} </td>
-                                    </tr>
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">select date</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Close</button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                     </div>
                 </section>
@@ -202,12 +174,12 @@
                     let start = document.getElementById('startDate').value
                     let end = document.getElementById('endDate').value
                     if (start == "") {
-                        
-                        
+
+
                     } else if (end == "") {
-                       
+
                     } else if (start > end) {
-                        
+
                     } else {
                         $.ajax({
 

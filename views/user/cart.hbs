@@ -44,8 +44,10 @@
               <th scope="col">Image</th>
               <th scope="col">Name</th>
               <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Options</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -57,9 +59,11 @@
               <th scope="row">{{inc
                 @index
                 }}</th>
-              <th><img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
-                  style="margin:0 auto; width: 50px;height: 50px;" /></th>
+              <th> <a href="/item/{{this.product._id}}"><img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
+                  style="margin:0 auto; width: 50px;height: 50px;" /></a> </th>
               <td>{{this.product.productName}}</td>
+              <td>{{this.product.price}}</td>
+              <td>{{this.product.activeOffer}}</td>
               <td>{{this.product.offerPrice}}</td>
               <td>
                 <button class="btn btn-primary"
@@ -98,7 +102,7 @@
 
           </tbody>
         </table>
-        <hr />
+
         <div class="mx-5 px-5">
           <div class="float-end">
             {{#each

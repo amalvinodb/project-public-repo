@@ -1,4 +1,4 @@
-<section class="bg-light">
+<section class="bg-light ">
     <div class="contain">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -13,19 +13,22 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item mx-4 pe-5 marlf">
-                            <a class="nav-link active" aria-current="page" href="/allProducts">Products</a>
+                        <li class="nav-item  pe-3">
+                            <a class="nav-link active" aria-current="page" href="/allProducts"><i class="fs-3 bi bi-boxes"></i></a>
+
+                        </li>
+                        <li class="nav-item  pe-3">
+                            <a class="nav-link active" aria-current="page" href="/user/cart"><i
+                                    class="fs-3 bi bi-cart"><span class="fs-5 badge bg-success"
+                                        id="cartCount">{{cartCount}}</span></i></a>
+                        </li>
+                        <li class="nav-item me-4 pe-5 marlf">
+                            <a class="nav-link active" aria-current="page" href="/user/wallet"><i class="fs-3 bi bi-wallet2"></i></a>
                         </li>
                         <li class="nav-item   ">
-                            <a class="nav-link active" href="/user"><i class="fs-4 bi-person-circle"></i></a>
+                            <a class="nav-link active" href="/user"><i class="fs-3 bi-person-circle"></i></a>
                         </li>
-                        <li>
-                            <div>
-                                {{!-- <i class="bi bi-bag"></i> --}}
-                                <a href="/user/cart"><i class="bi bi-cart4"><span class="badge bg-success"
-                                            id="cartCount">{{cartCount}}</span></i></a>
-                            </div>
-                        </li>
+
                     </ul>
                 </div>
             </div>

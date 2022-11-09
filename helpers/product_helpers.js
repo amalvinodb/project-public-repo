@@ -238,5 +238,18 @@ module.exports = {
 			resolve(users.length);
 		});
 	},
+	landingProducts:()=>{
+		return new Promise(async(resolve,reject)=>{
+			let data = await db.get().collection(collection.PRODUCT_COLLECTION).find({activeOffer:{$ne:0}}).sort({activeOffer:-1}).limit(4).toArray()
+			
+			resolve(data)
+		})
+	},
+	bestOffer:()=>{
+		return new Promise(async(resolve,reject)=>{
+			let data = await db.get().collection(collection.PRODUCT_COLLECTION).find().sort({offerPrice:1}).limit(4).toArray()
+			resolve(data)
+		})
+	}
 
 };

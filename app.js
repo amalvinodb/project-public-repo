@@ -45,6 +45,10 @@ Handlebars.registerHelper("inc", function(value, options)
 {
     return parseInt(value) + 1;
 });
+Handlebars.registerHelper("add",function(arg1,arg2,options){
+  return arg1*arg2
+})
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
@@ -85,3 +89,4 @@ console.log(err)
 });
 
 module.exports = app;
+

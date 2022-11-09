@@ -1,94 +1,236 @@
-<section class="contain mt-5">
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-        {{#each orderDetails}}
-        <div class="col">
-            {{#each this.products}}
-            <div class="card" style="width: 18rem;">
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-dark min-vh-100">
+                <a href="/admin"
+                    class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <ul><span class="fs-5 d-none d-sm-inline fw-bold text-decoration-underline">Admin Pannel</span></ul>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li>
+                        <a href="/admin/dashBoard?time=1" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">Dash
+                                Board</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/allOrders" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
+                            style="width: 220px;background-color:blue">
+                            <i class="fs-4 bi-box-seam-fill"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/allProducts" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-list-ul"></i> <span class="ms-1 d-none d-sm-inline ">Products</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Catagories</span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/allUsers" class="nav-link text-dark px-0 align-middle ">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Users</span></a>
+                    </li>
 
-                <img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
-                    style="margin:0 auto; width: 200px;height: 200px;">
-                <div class="card-body">
+                    <li>
+                        <a href="/admin/report?ext=0" class="nav-link text-dark text-primary px-0 align-middle">
+                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">Report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/cupon" class="nav-link px-0 text-dark align-middle">
+                            <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">Cupons</span> </a>
+                    </li>
+                    <li>
+                        <a href="/admin/offers" class="nav-link text-dark text-primary px-0 align-middle">
+                            <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">Offers</span>
+                        </a>
+                    </li>
+                    <li><a class="text-danger nav-link px-0 align-middle" href="/admin/logout"> <i
+                                class="bi bi-box-arrow-left"></i> Signout</a></li>
+                </ul>
+                <hr>
 
-                    <a href="/item/{{this.product._id}}" class="text-decoration-none">
-                        <h4 class="card-title text-dark">{{this.product.productName}}</h4>
-                    </a>
-                    <h5>Rs:<del>{{this.product.price}}</del> <span
-                            class="text-primary bi-currency-rupee">{{this.product.offerPrice}}</span> /- </h5>
-                    <p class="card-text"
-                        style=" white-space: nowrap;max-width: 50px; overflow: hidden;text-overflow: ellipsis; margin-right:50px; ">
-                        {{this.product.discription}}</p>
-                    {{!-- <a href="/user/addToCart/{{this._id}}" class="btn btn-primary">Add to cart</a> --}}
-                    {{!-- <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">add to cart</button> --}}
-                    <p>quantity of product: <span class="text-success">{{this.quantity}}</span></p>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-        {{/each}}
-
-    </div>
-</section>
-<section class="container mt-2">
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h3 class="h6">Payment Method</h3>
-                    <p>{{address.paymentMethod}} <br>
-                        {{#each address.totalPrice}}
-                        Total: {{this.total}}
-                        {{/each}}
-                    <p>order status: <span>{{address.status}}</span> </p>
-                    <p>order date: {{address.date}}</p>
-                    {{#if address.orderValidity}}
-                    <p>date of shiping: <span>{{address.shippingDate}}</span> </p>
-                    <p>the order is yet to arrive</p>
-                    {{else}}
-                    {{#if address.isDelivered}}
-                    <p>date of delivery: <span>{{address.deliveryDate}}</span></p>
-                    <p class="text-success">the order have been delevered</p>
-                    {{else}}
-                    <h4 class="text-danger">your order have been canceled</h4>
-                    <p>date of cansalation:
-                        <span class="text-danger">{{address.cancalationDate}} </span>
-                    </p>
-                    {{/if}}
-                    {{/if}}
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="h6">Billing address</h3>
-                    <address>
-                        <strong>{{address.deleveryDetails.userName}}</strong><br>
-                        {{address.deleveryDetails.hname}}<br>
-                        {{address.deleveryDetails.town}},
-                        {{address.deleveryDetails.state}},{{address.deleveryDetails.pin}}<br>
-                        <abbr title="Phone">Ph:</abbr> {{address.deleveryDetails.phnumber}}
-                    </address>
-                </div>
             </div>
         </div>
-    </div>
-    </div>
-</section>
-<section class="container my-3">
-    <a href="/admin" class="btn btn-primary">view all orders</a>
-    {{#if address.orderValidity}}
-    {{#if address.isShipped}}
-    {{#if address.isDelivered}}
+        <div class="col py-3">
 
-    {{else}}
-    <a href="/admin/delever/{{address._id}}" class="btn btn-success"
-        onclick="return confirm('are you sure to deliver?')">deliver</a>
-    {{/if}}
+            <section>
+                <section>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Offer</th>
+                                <th scope="col">Offer Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Total Offer</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Option</th>
+                                <th scope="col">Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each order.products}}
+                            <tr>
+                                <th scope="row">{{inc @index}}</th>
+                                <td><img src="{{this.product.images.[0]}}" alt="" width="50px"></td>
+                                <td>{{this.product.productName}}</td>
+                                <td><i class="bi bi-currency-rupee"></i>{{this.product.price}}</td>
+                                <td>{{this.product.activeOffer}}%</td>
+                                <td><i class="bi bi-currency-rupee"></i>{{this.product.offerPrice}}</td>
+                                <td>{{this.quantity}}</td>
+                                <td><i class="bi bi-currency-rupee"></i>{{add this.quantity this.product.price}}</td>
+                                <td><i class="bi bi-currency-rupee"></i>{{add this.quantity this.product.offerPrice}}
+                                </td>
+                                <td>{{this.status}}</td>
+                                <td>
+                                    {{#if this.activeStatus}}
+                                    {{#if this.isDelivered}}
+                                    <p class="text-success">product is delivered</p>
+                                    {{else}}
+                                    {{#if this.isShipped}}
+                                    <button onclick="deliverProd('{{this.item}}')"
+                                        class="btn btn-primary">Deliver</button>
+                                    {{else}}
+                                     <button onclick="shipProd('{{this.item}}')" class="btn btn-primary">Ship</button>
+                                    {{/if}}
+                                    {{/if}}
+                                    {{else}}
+                                    <p class="text-danger">invalid</p>
+                                    {{/if}}
+                                   
+                                    
+                                </td>
+                                <td>
+                                    {{#if this.activeStatus}}
+                                    {{#if this.isDelivered}}
+                                    <p class="text-danger">cannot be canceled</p>
+                                    {{else}}
+                                    <button onclick="cancelProd('{{this.item}}','{{this.quantity}}')"
+                                        class="btn btn-danger">Cancel</button>
+                                    {{/if}}
+                                    {{else}}
+                                    <p class="text-danger">order is invalid</p>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                            <div id="orderId" hidden>{{order._id}}</div>
+                            <div id="userId" hidden>{{order.userEmail}}</div>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="d-flex mt-5">
+                    <div class="bg-light border p-3 px-5">
+                        <h5>ADDRESS</h5>
+                        <P>{{order.userName}}</P>
+                        <p>{{order.deleveryDetails.userName}},{{order.deleveryDetails.phnumber}},{{order.deleveryDetails.pin}},
+                            <br>
+                            {{order.deleveryDetails.hname}},{{order.deleveryDetails.state}},{{order.deleveryDetails.lmk}},{{order.deleveryDetails.town}},
+                            <br>
+                            {{order.deleveryDetails.region}}<br>
 
-    {{else}}
-    <a href="/admin/ship/{{address._id}}" class="btn btn-success"
-        onclick="return confirm('are you sure to ship?')">ship</a>
-    {{/if}}
-    <a href="/user/cancelOrder/{{address._id}}" class="btn btn-danger"
-        onclick="return confirm('are you sure to cansel?')">cancel order</a>
-    {{/if}}
-</section>
+                        </p>
+                        <hr>
+
+                    </div>
+                    <div class="ms-auto me-4 w-25">
+                        <p> PAYMENT DETAILS</p>
+                        <P></P>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td> PRICE</td>
+                                <td><i class="bi bi-currency-rupee"></i>{{order.firstPrice}}</td>
+                            </tr>
+                            <tr>
+                                <td>DISCOUNT</td>
+                                <td>{{order.discountRate}}%</td>
+                            </tr>
+                            <tr>
+                                <td>TOTAL</td>
+                                <td><i class="bi bi-currency-rupee"></i>{{order.totalPrice.[0].total}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+            </section>
+            <section class="container my-3">
+                <a href="/admin" class="btn btn-primary">view all orders</a>
+                {{#if order.orderValidity}}
+                <a href="/admin/delever/{{order._id}}" class="btn btn-success"
+                    onclick="return confirm('are you sure to deliver?')">deliver</a>
+
+                <a href="/admin/ship/{{order._id}}" class="btn btn-success"
+                    onclick="return confirm('are you sure to ship?')">ship</a>
+
+                <a href="/admin/removeOrder/{{order._id}}" class="btn btn-danger"
+                    onclick="return confirm('are you sure to cansel?')">cancel order</a>
+                {{/if}}
+            </section>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function cancelProd(prod, qnty) {
+        let orderId = document.getElementById('orderId').innerText
+        let user = document.getElementById('userId').innerText
+        $.ajax({
+            url: '/admin/cancelProduct',
+            method: 'post',
+            data: {
+                order: orderId,
+                prodId: prod,
+                quantity: qnty,
+                email: user,
+            },
+            success: (response) => {
+                location.reload()
+            }
+
+        })
+    }
+    function shipProd(prod) {
+        let orderId = document.getElementById('orderId').innerText
+        $.ajax({
+            url: '/admin/shipProduct',
+            method: 'post',
+            data: {
+                prodId: prod,
+                order: orderId
+            },
+            success: (response) => {
+                location.reload()
+            }
+        })
+    }
+    function deliverProd(prod) {
+        let orderId = document.getElementById('orderId').innerText
+        $.ajax({
+            url: '/admin/deliverProduct',
+            method: 'post',
+            data: {
+                order: orderId,
+                prodId: prod
+            },
+            success: (response) => {
+                location.reload()
+            }
+        })
+    }
+</script>
+
+
+
+
 
 {{!-- <section class="mt-5">
     {{>user-footer}}

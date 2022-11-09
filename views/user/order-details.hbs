@@ -1,92 +1,246 @@
-<section class="contain mt-5">
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-        {{#each orderDetails}}
-        {{#each this.products}}
-        <div class="col">
+<h2 class="text-center fw-bold mt-5">Order Details</h2>
+<section class="container mt-5 d-flex">
 
-            <div class="card" style="width: 18rem;">
+    <section class="col-md-8">
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th scope="col">Index</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each order.products}}
+                <tr>
+                    <th scope="row">{{inc @index}}</th>
+                    <td><img src="{{this.product.images.[0]}}" alt="" style="width: 50px;"></td>
+                    <td>{{this.product.productName}}</td>
+                    <td>{{this.product.price}}</td>
+                    <td>{{this.product.offerPrice}}</td>
+                    <td>{{this.product.activeOffer}}</td>
+                    <td>{{this.status}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>
+                        {{#if this.activeStatus}}
+                        {{#if this.isDelivered}}
+                       
+                        <button onclick="retrurn('{{this.item}}','{{this.quantity}}')"
+                            class="btn btn-primary">return</button>
+                     
+                        {{else}}
+                        <button onclick="cancel('{{this.item}}','{{this.quantity}}')"
+                            class="btn btn-danger">cancel</button>
+                        {{/if}}
+                        {{else}}
+                        <p class="text-danger">Order is invalid</p>
+                        {{/if}}
+                    </td>
+                </tr>
+                {{/each}}
+                <p hidden id="orderId">{{order._id}}</p>
+                
+            </tbody>
+        </table>
+        {{#if order.orderValidity}}
+        <div class="my-5">
+            <a href="/user/cancelOrder/{{order._id}}" class="btn btn-danger">Cancel Order</a>
+            <a href="/user/returnOrder?orderId={{order._id}}" class="btn-primary btn">Return Order</a>
+        </div>
+        {{else}}
+        <p class="text-danger">order is invalid</p>
+        {{/if}}
+    </section>
+    <section class="col-md-4">
+        <div class="bg-light border mx-4 p-3">
+            <h5 class="text-center">Address</h5>
+            <p>
+                {{order.userName}},{{order.userEmail}} <br>
+                {{order.deleveryDetails.userName}}, {{order.deleveryDetails.phnumber}}, {{order.deleveryDetails.hname}}, {{order.deleveryDetails.region}}, {{order.deleveryDetails.pin}},
+                 {{order.deleveryDetails.lmk}}, {{order.deleveryDetails.town}}, {{order.deleveryDetails.state}}
+            </p>
+            <hr>
+            <h5 class="text-center">price</h5>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>Price</td>
+                        <td>{{order.firstPrice}}</td>
+                    </tr>
+                    <tr>
+                        <td>Discount</td>
+                        <td>{{order.discountRate}}</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td>{{order.totalPrice.[0].total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
+</section>
 
-                <img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
-                    style="margin:0 auto; width: 200px;height: 200px;">
-                <div class="card-body">
-
-                    <a href="/item/{{this.product._id}}" class="text-decoration-none">
-                        <h4 class="card-title text-dark">{{this.product.productName}}</h4>
+<section class="footer mt-5">
+    <div class="r">
+        <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
+            <section class="d-flex justify-content-between p-4" style="background-color: #6351ce">
+                <div class="me-5">
+                    <span>* This is a trial websit that is made as a personal project please donot make any
+                        transactions..</span>
+                </div>
+                <div>
+                    <a href="https://www.facebook.com/natsu.av" target="_blank" class="text-white me-4">
+                        <i class="fab fa-facebook-f"></i>
                     </a>
-                    <h5>Rs:<del>{{this.product.price}}</del> <span
-                            class="text-primary bi-currency-rupee">{{this.product.offerPrice}}</span> /- </h5>
-                    <p class="card-text"
-                        style=" white-space: nowrap;max-width: 50px; overflow: hidden;text-overflow: ellipsis; margin-right:50px; ">
-                        {{this.product.discription}}</p>
+                    <a href="https://twitter.com/Amalvin54535076" target="_blank" class="text-white me-4">
+                        <i class="fab fa-twitter"></i>
+                    </a>
 
-                    {{!-- <a href="/user/addToCart/{{this._id}}" class="btn btn-primary">Add to cart</a> --}}
-                    {{!-- <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">add to cart</button> --}}
-                    <p>quantity of product: <span class="text-success">{{this.quantity}}</span></p>
+                    <a href="https://www.instagram.com/_extream_bencher/" target="_blank" class="text-white me-4">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/amal-vinod-5454511a0/" target="_blank" class="text-white me-4">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/amalvinodb" target="_blank" class="text-white me-4">
+                        <i class="fab fa-github"></i>
+                    </a>
                 </div>
+            </section>
+            <section class="">
+                <div class="container text-center text-md-start mt-5">
+                    <div class="row mt-3">
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Tech Park</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                This is a websit that i made using nodejs as my server side language.
+                                Using mongodb as my database which is a nosql database. This is my very
+                                first complete website with db and a serverside language. hbs was used as
+                                a view engine. i did not use any fornt end stack.
+                            </p>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Navigation</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="/allProducts" class="text-white">All Products</a>
+                            </p>
+                            <p>
+                                <a href="/" class="text-white">Home</a>
+                            </p>
+
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold">Menu</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p>
+                                <a href="/user" class="text-white">Profile</a>
+                            </p>
+                            <p>
+                                <a href="/user/cart" class="text-white">Cart</a>
+                            </p>
+                            <p>
+                                <a href="/user/wishlist" class="text-white">Wishlist</a>
+                            </p>
+                            <p>
+                                <a href="/user/allOrders" class="text-white">Orders</a>
+                            </p>
+                            <p>
+                                <a href="/user/logout" class="text-danger">logout</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <h6 class="text-uppercase fw-bold">Contact</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; background-color: #7c4dff; height: 2px" />
+                            <p><i class="fas fa-home mr-3"></i> Thodupuzha,Idukki,Kerala</p>
+                            <p><i class="fas fa-envelope mr-3"></i> amalvinodb2000@gmail.com</p>
+                            <p><i class="fas fa-phone mr-3"></i> +918157876820</p>
+                            <p><i class="fas fa-print mr-3"></i> +918136909633</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+                © 2020 Copyright:
+                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
             </div>
-        </div>
-        {{/each}}
-        {{/each}}
-
+        </footer>
     </div>
 </section>
-<section class="container mt-2">
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h3 class="h6">Payment Method</h3>
-                    <p>{{address.paymentMethod}} <br>
-                        {{#each address.totalPrice}}
-                        Total: {{this.total}}
-                        {{/each}}
-                    <p>order status: <span>{{address.status}}</span> </p>
-                    <p>order date: {{address.date}}</p>
-                    {{#if address.orderValidity}}
-                    <h4>your order have been shipped</h4>
-                    <p>date of shiping: <span>{{address.shippingDate}}</span> </p>
-                    <p>your order is yet to arrive</p>
-                    {{else}}
+<script>
+    function cancel(prod, qnty) {
+        let order = document.getElementById("orderId").innerText
 
-                    {{#if address.isDelivered}}
-                    <h4 class="text-success">your order have been delevered</h4>
-                    <p>date of delivery: <span>{{address.deliveryDate}}</span></p>
+        $.ajax({
+            url: "/user/cancelProduct",
+            data: {
+                prodId: prod,
+                order: order,
+                quantity: qnty,
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    location.reload()
+                } else {
+                    Toastify({
+                        text: "product cannot be canceled",
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "center", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                        onClick: function () { } // Callback after click
+                    }).showToast();
+                }
 
-                    {{else}}
-                    <h4 class="text-danger">your order have been canceled!</h4>
-                    <p>date of cansalation:
-                        <span class="text-danger">{{address.cancalationDate}} </span>
-                    </p>
-                    {{/if}}
-                    {{/if}}
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="h6">Billing address</h3>
-                    <address>
-                        <strong>{{address.deleveryDetails.userName}}</strong><br>
-                        {{address.deleveryDetails.hname}}<br>
-                        {{address.deleveryDetails.town}},
-                        {{address.deleveryDetails.state}},{{address.deleveryDetails.pin}}<br>
-                        <abbr title="Phone">Ph:</abbr> {{address.deleveryDetails.phnumber}}
-                    </address>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-</section>
-<section class="container">
-    <a href="/user/allOrders" class="btn btn-primary">view all orders</a>
-   
-    {{#if address.orderValidity}}
-    <a href="/user/cancelOrder/{{address._id}}" class="btn btn-danger" onclick="return confirm('are you sure?')">cancel
-        order</a>
-    {{/if}}
-    {{#if address.canBeReturned}}
-     <a href="/user/returnOrder?orderId={{address._id}}" class="btn btn-danger">return</a>
-    {{/if}}
-</section>
+            }
+        })
+    }
+    function retrurn(prodId, qty) {
+        let order = document.getElementById("orderId").innerText
 
-{{!-- <section class="mt-5">
-    {{>user-footer}}
-</section> --}}
+        $.ajax({
+            url: "/user/returnProduct",
+            data: {
+                prodId: prodId,
+                quantity: qty,
+                order: order,
+            },
+            method: 'post',
+            success: (responce) => {
+                if (responce.status) {
+                    location.reload()
+                } else {
+                    Toastify({
+                        text: "product cannot be returned",
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "center", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                        onClick: function () { } // Callback after click
+                    }).showToast();
+                }
+            }
+        })
+    }
+</script>

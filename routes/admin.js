@@ -11,8 +11,9 @@ const catagory_helpers = require("../helpers/catagory_helpers");
 const { cloudinary } = require("../config/cloudnary");
 const moment = require("moment");
 const cuponHelper = require("../helpers/cupon_helpers");
-const { ObjectId } = require("mongodb");
+const { ObjectId, Db } = require("mongodb");
 const { ConversationList } = require("twilio/lib/rest/conversations/v1/conversation");
+const admin_helpers = require("../helpers/admin_helpers");
 // const upload  = require('../config/multer')
 
 const upload = multer({
@@ -39,10 +40,11 @@ router.get("/", isAdminLoggedIn, async (req, res, next) => {
 	res.redirect("/admin/dashBoard");
 });
 router.get("/allOrders", isAdminLoggedIn, async (req, res) => {
+	let error = req.session.adminCancalationError
+	req.session.adminCancalationError = false
 	await userHelper.removeInvalidOrders()
-	let orders = await adminHelper.getAllOrders();
-
-	res.render("admin/admin-orders", { admin: true, orders });
+	let orders = await adminHelper.getAllOrders();	
+	res.render("admin/admin-orders", { admin: true, orders,error });
 });
 // to show the login page
 router.get("/login", isAdminNotLoggedIn, (req, res) => {
@@ -84,6 +86,7 @@ router.post(
 		{ name: "image4", maxCount: 1 },
 	]),
 	async (req, res) => {
+	try{
 		const cloudinaryImageUploadMethod = (file) => {
 			return new Promise((resolve, reject) => {
 				cloudinary.uploader.upload(file, (err, res) => {
@@ -155,6 +158,12 @@ router.post(
 				res.redirect("/admin/allProducts");
 			});
 		}
+
+	}catch{
+		res.redirect('/admin/allProducts')
+	}
+		
+	
 	}
 );
 // to delete the product from the db
@@ -299,44 +308,54 @@ router.post("/editCatagory/:id", (req, res) => {
 router.get("/viewOrderDetails/:id", isAdminLoggedIn, async (req, res) => {
 	let admin = req.session.admin;
 	let orderId = req.params.id;
-	let address = await userHelper.getSingleOrder(orderId);
-	let orderDetails = await userHelper.getOrderProducts(orderId);
-
-	res.render("admin/order-details", { orderDetails, admin, address });
+	let order = await userHelper.getSingleOrder(orderId);
+	res.render("admin/order-details", {  admin, order });
 });
 router.get("/ship/:id", (req, res) => {
 	let orderId = req.params.id;
 	adminHelper.shipOrder(orderId).then(() => {
-		res.redirect("/admin");
+		res.redirect("/admin/allOrders");
 	});
 });
 router.get("/delever/:id", (req, res) => {
 	let orderId = req.params.id;
 	adminHelper.deliverOrder(orderId).then(() => {
-		res.redirect("/admin");
+		res.redirect("/admin/allOrders");
 	});
 });
-router.get("/cancelOrder/:id", (req, res) => {
-	let orderId = req.params.id;
-	adminHelper.cancelOrder(orderId);
-	res.redirect("/user/allOrders");
-});
+router.post('/cancelProduct',async(req,res)=>{
+	
+	let user = await userHelper.getUser(req.body.email);
+	await userHelper.cancelProduct(req.body, user);
+	await userHelper.checkOrderStatus();
+	res.json({status:true})
+})
+router.post('/shipProduct',async(req,res)=>{
+		await adminHelper.shipProduct(req.body)
+	res.json({status:true})
+})
+router.post('/deliverProduct',async(req,res)=>{
+	await adminHelper.deliverProduct(req.body)
+	res.json({status:true})
+})
+
 router.get("/dashBoard", isAdminLoggedIn, async (req, res) => {
-	// if(req.query.time){
-	// 	let time = req.query.time
-	// }else{
-	// 	let time =
-	// }
+	
 
 	let data = await adminHelper.dashboard();
-	console.log(data)
+
 
 	res.render("admin/dash-board", { data, admin: true });
 });
 router.get("/report", isAdminLoggedIn, async (req, res) => {
+	let gap = 1
+	if(req.query.frame){
+		gap = req.query.frame
+	}
+
 	let today = new Date();
 	let end = moment(today).format("YYYY-MM-DD");
-	let start = moment(end).subtract(1, "year").format("YYYY-MM-DD");
+	let start = moment(end).subtract(gap, "year").format("YYYY-MM-DD");
 
 	let data = await adminHelper.salesReport(start, end);
 
@@ -345,8 +364,8 @@ router.get("/report", isAdminLoggedIn, async (req, res) => {
 router.post("/filterReport", async (req, res) => {
 	let start = req.body.start;
 	let end = req.body.end;
-	let data = await adminHelper.sales(start, end);
-	console.log(data);
+	let data = await adminHelper.salesReport(start, end);
+
 	res.json({ data });
 });
 
@@ -362,7 +381,7 @@ router.get("/addcupon", isAdminLoggedIn, (req, res) => {
 	}
 });
 router.post("/addcupon", (req, res) => {
-	// console.log(req.body)
+
 	cuponHelper.addCupon(req.body).then((responce) => {
 		if (!responce) {
 			res.redirect("/admin/addcupon?error=1");
@@ -415,7 +434,7 @@ router.post("/addCatagoryOffer", async (req, res) => {
 		catagory_helpers.addCatagoryOffer(req.body);
 		let products = await productHelper.getAllProductsAdmin();
 		let len = products.length;
-		console.log(len);
+	
 		for (let i = 0; i < len; i++) {
 			await adminHelper.calculateProduct(products[i]._id);
 		}
@@ -446,13 +465,32 @@ router.get("/deleteCatagoryOffer", async (req, res) => {
 	catagory_helpers.addCatagoryOffer(data);
 	let products = await productHelper.getAllProductsAdmin();
 	let len = products.length;
-	console.log(len);
+
 	for (let i = 0; i < len; i++) {
 		await adminHelper.calculateProduct(products[i]._id);
 	}
 
 	res.redirect("/admin/offers");
 });
+router.get("/removeOrder/:id", async (req, res) => {
+	let orderId = req.params.id;
+	let check = await userHelper.cancelOrder(orderId);
+	if(check){
+		let user = await userHelper.returnCash(orderId);
+		await userHelper.cancelAllProducts(orderId)
+		await productHelper.resetQuantity(orderId);
+	}else{
+		req.session.adminCancalationError = true
+	}
+	
+	res.redirect("/admin/allOrders");
+});
+
+
+
+
+
+
 
 // to check if the admin is logged in
 function isAdminLoggedIn(req, res, next) {
