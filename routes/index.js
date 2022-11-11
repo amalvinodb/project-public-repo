@@ -86,4 +86,16 @@ router.get("/item/:id", (req, res) => {
 		res.render("item", { data, catagory, user });
 	});
 });
+
+router.get('/searchProduct',async(req,res)=>{
+	let user = req.session.user
+	if(req.query.data != ""){
+		console.log(req.query.data)
+		let products = await productHelper.findSearchedProduct(req.query.data)
+		console.log(products)
+		res.render('search-product',{products,user})
+	}else{
+		res.redirect('/allProducts')
+	}
+})
 module.exports = router;

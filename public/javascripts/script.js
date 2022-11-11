@@ -65,3 +65,8 @@ $(document).ready(function () {
         zoomrange: [3, 3]
     });
 });
+
+function searching(){
+    let data = document.getElementById('search').value
+    location.href = '/searchProduct?data='+data
+}
