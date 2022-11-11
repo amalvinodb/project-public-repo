@@ -4,15 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const hbs = require("express-handlebars");
-var helpers = require('handlebars-helpers')();
-const fileUpload = require("express-fileupload");
+
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var userRouter = require('./routes/user');
 var db = require("./config/connection");
 var app = express();
 var sessions = require("express-session");
-const multer  = require('./config/multer')
+
 app.use((req,res,next)=>{
   res.set('Cache-Control','no-cache, private,no-store,must-revalidate,max-stale=0,pre-check=0')
   next()

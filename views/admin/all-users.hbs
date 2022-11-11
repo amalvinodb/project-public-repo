@@ -77,11 +77,10 @@
                             <td>
                                 {{#if this.userStatus}}
 
-                                <a class="btn btn-primary" href="/admin/blockUser/{{this._id}}" role="button"
-                                    onclick="return confirm('are you sure?')">block</a>
+                                <a class="btn btn-primary" role="button" onclick="blockUser('{{this._id}}')">block</a>
                                 {{else}}
-                                <a class="btn btn-danger" href="/admin/unblockUser/{{this._id}}" role="button"
-                                    onclick="return confirm('are you sure?')">unblock</a>
+                                <a class="btn btn-danger" role="button"
+                                    onclick="unblockUser('{{this._id}}')">unblock</a>
                                 {{/if}}
                             </td>
                         </tr>
@@ -97,4 +96,39 @@
     $(document).ready(function () {
         $('#table_id').DataTable();
     });
+    function blockUser(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to block this user",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/blockUser/' + id
+                } else {
+                    swal("Your file is safe!");
+                }
+            });
+
+    }
+    function unblockUser(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to Unblock this user",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/unblockUser/' + id
+                } else {
+                    swal("Your file is safe!");
+                }
+            });
+
+
+    }
 </script>

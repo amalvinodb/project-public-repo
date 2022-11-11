@@ -24,7 +24,7 @@ function addToCart(prodId){
                 $('#cartCount').html(count)
                 
             }else{
-                location.href = '/user/login'
+                $('#loginmodal').modal('show')
             }
             
             
@@ -54,7 +54,7 @@ function addToWishlist(prodId){
                     onClick: function(){} // Callback after click
                   }).showToast();
             }else{
-                location.href = '/user/login'
+                $('#loginmodal').modal('show')
             }
             
         }

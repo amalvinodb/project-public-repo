@@ -71,11 +71,12 @@
                         <tbody>
                             {{#each products}}
                             <tr>
-                                <td >{{inc @index}}</td>
-                                <td >{{this.productName}}</td>
+                                <td>{{inc @index}}</td>
+                                <td>{{this.productName}}</td>
                                 <td>{{this.offerRate}}</td>
                                 <td>
-                                    <a href="/admin/deleteProductOffer?id={{this._id}}" class="btn btn-danger">delete</a>
+                                    <a onclick="deleteProductOffer('{{this._id}}')"
+                                        class="btn btn-danger">delete</a>
                                 </td>
                             </tr>
                             {{/each}}
@@ -98,10 +99,10 @@
                             {{#each catagory}}
                             <tr>
                                 <th>{{inc @index}}</th>
-                                <td >{{this.catagoryName}}</td>
+                                <td>{{this.catagoryName}}</td>
                                 <td>{{this.catagoryOfferRate}}</td>
                                 <td>
-                                    <a href="/admin/deleteCatagoryOffer?id={{this._id}}" class="btn btn-danger">delete</a>
+                                    <a onclick="deleteCatagoryOffer('{{this._id}}')" class="btn btn-danger">delete</a>
                                 </td>
                             </tr>
                             {{/each}}
@@ -112,3 +113,39 @@
         </div>
     </div>
 </div>
+<script>
+    function deleteCatagoryOffer(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/deleteCatagoryOffer?id=' + id
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+
+    }
+    function deleteProductOffer(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/deleteProductOffer?id=' + id
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+
+    }
+</script>

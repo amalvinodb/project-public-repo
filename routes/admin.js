@@ -5,15 +5,13 @@ var router = express.Router();
 const userHelper = require("../helpers/user_helpers"); //user collection
 const adminHelper = require("../helpers/admin_helpers"); //admin collection
 const productHelper = require("../helpers/product_helpers"); //product collection
-const { response, rawListeners } = require("../app");
-const { PRODUCT_COLLECTION } = require("../config/collection");
+
 const catagory_helpers = require("../helpers/catagory_helpers");
 const { cloudinary } = require("../config/cloudnary");
 const moment = require("moment");
 const cuponHelper = require("../helpers/cupon_helpers");
 const { ObjectId, Db } = require("mongodb");
-const { ConversationList } = require("twilio/lib/rest/conversations/v1/conversation");
-const admin_helpers = require("../helpers/admin_helpers");
+
 // const upload  = require('../config/multer')
 
 const upload = multer({
@@ -132,7 +130,7 @@ router.post(
 			};
 
 			productHelper.addProduct(body).then(() => {
-				console.log("product added");
+			
 				res.redirect("/admin/allProducts");
 			});
 		} else {
@@ -154,7 +152,7 @@ router.post(
 			};
 
 			productHelper.addProduct(body).then(() => {
-				console.log("product added");
+		
 				res.redirect("/admin/allProducts");
 			});
 		}
@@ -274,10 +272,10 @@ router.get("/addCatagory", isAdminLoggedIn, (req, res) => {
 router.post("/addCatagory", async (req, res) => {
 	catagory_helpers.checkCatagory(req.body).then((data) => {
 		if (data) {
-			console.log("catagory fail");
+	
 			res.send("catagory already exist");
 		} else {
-			console.log("added");
+	
 			catagory_helpers.addCatagory(req.body);
 			res.redirect("/admin/manageCatagory");
 		}
@@ -352,10 +350,15 @@ router.get("/report", isAdminLoggedIn, async (req, res) => {
 	if(req.query.frame){
 		gap = req.query.frame
 	}
-
 	let today = new Date();
 	let end = moment(today).format("YYYY-MM-DD");
 	let start = moment(end).subtract(gap, "year").format("YYYY-MM-DD");
+	if(req.query.typ){
+		start = req.query.start;
+		end = req.query.end;
+	}
+
+	
 
 	let data = await adminHelper.salesReport(start, end);
 

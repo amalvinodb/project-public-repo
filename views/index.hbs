@@ -245,8 +245,67 @@
         </footer>
     </div>
 </section>
+<section>
+    <div class="modal fade" id="loginmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example1">Email address</label>
+                        <input name="email" type="email" id="email" class="form-control" required />
+                    </div>
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example2">Password</label>
+                        <input name="password" type="password" id="password" class="form-control" required />
+
+                    </div>
+                    <!-- Submit button -->
+                   
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                     <button onclick="dologin(event)" class="btn btn-primary">Sign in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+     function dologin(event) {
+        let useremail = document.getElementById('email').value
+        let userpswd = document.getElementById('password').value
+        event.preventDefault()
+        $.ajax({
+            url: '/user/modalLogin',
+            method: 'post',
+            data: {
+                email: useremail,
+                password: userpswd
+            },
+            success: (response) => {
+                if (response.status) {
+                    swal("loged in", "login was sucessfull", "success").then((value) => {
+                        location.reload()
+                    })
 
 
+                } else {
+                    swal("Error!", "Invalid data", "error");
+                }
+
+            }
+        })
+    }
+</script>
 
 
 <style>

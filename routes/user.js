@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
 const userHelper = require("../helpers/user_helpers"); //user collection
-const adminHelper = require("../helpers/admin_helpers"); //admin collection
+
 const productHelper = require("../helpers/product_helpers"); //product collection
 var paypal = require("paypal-rest-sdk");
 const cupon_helpers = require("../helpers/cupon_helpers");
-const { Db } = require("mongodb");
+
 require("dotenv").config();
 // twilio otp verification
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -62,7 +62,7 @@ router.post("/otplogin", (req, res) => {
 				.services(process.env.TWILIO_SERVICE_SID)
 				.verifications.create({ to: "+918136909633", channel: "sms" })
 				.then((data) => {
-					console.log("otp has been sent");
+				
 				})
 				.catch((err) => {
 					console.log(err);
@@ -206,11 +206,11 @@ router.post("/checkout", async (req, res) => {
 	let prod = userHelper.placeOrder(req.body, user, total, address, first, rate).then(async (responce) => {
 		let order = responce;
 		if (req.body.payment == "cod") {
-			console.log("responce");
+		
 			userHelper.deleteCart(req.body.userId);
 			res.json({ success: true, order: responce });
 		} else if (req.body.payment == "razopay") {
-			console.log("razopy payment is online");
+			
 			userHelper.generateRazopay(responce, total).then((responce) => {
 				responce.route = "razo";
 				res.json(responce);
@@ -220,7 +220,7 @@ router.post("/checkout", async (req, res) => {
 
 			req.session.totoal = tot;
 			req.session.order = responce;
-			console.log("paypal payment is online");
+			
 			const create_payment_json = {
 				intent: "sale",
 				payer: {
@@ -248,9 +248,9 @@ router.post("/checkout", async (req, res) => {
 					for (let i = 0; i < payment.links.length; i++) {
 						if (payment.links[i].rel === "approval_url") {
 							res.json({ route: "pal", serc: payment.links[i].href });
-							console.log("passed it");
+						
 						} else {
-							console.log("change it");
+							
 						}
 					}
 				}
@@ -290,10 +290,10 @@ router.get("/Sucess", (req, res) => {
 	};
 	paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
 		if (error) {
-			console.log(error.response);
+		
 			throw error;
 		} else {
-			console.log("Get Payment Response");
+		
 
 			userHelper.changePaymentStatus(order).then(() => {
 				res.redirect("/user/orderSucess?order=" + order);
@@ -333,6 +333,7 @@ router.get("/cancelOrder/:id", async (req, res) => {
 	res.redirect("/user/allOrders");
 });
 router.post("/removeFromCart", (req, res) => {
+
 	userHelper.removeCartProduct(req.body).then(async (responce) => {
 		res.json(responce);
 	});
@@ -370,16 +371,15 @@ router.post("/changePassword", (req, res) => {
 	});
 });
 router.post("/verify-payment", (req, res) => {
-	console.log("this is verify");
-	console.log(req.body);
+
 	let user = req.session.user._id;
 	userHelper
 		.verifyPayment(req.body)
 		.then(() => {
-			console.log("payment was a success");
+		
 			userHelper.changePaymentStatus(req.body.responce.receipt).then(() => {
 				userHelper.deleteCart(user);
-				console.log("true");
+			
 				res.json({ status: true, order: req.body.responce.receipt });
 			});
 		})
@@ -398,7 +398,7 @@ router.get("/wishlist", isUserLoggedIn, async (req, res) => {
 });
 router.get("/addToWishlist", (req, res) => {
 	let user = req.session.user;
-	console.log(user);
+
 	if (!user) {
 		res.json({ status: false });
 	} else {
@@ -437,7 +437,7 @@ router.post("/applyCupon", async (req, res) => {
 			final = parseInt(req.body.total - cupon.maxAmount);
 		}
 	}
-	console.log(rate, final);
+
 	res.json({ status: true, rate, final });
 });
 
@@ -464,8 +464,27 @@ router.post("/returnProduct", async (req, res) => {
 	}
 });
 router.get('/wallet',isUserLoggedIn,async(req,res)=>{
-	let user = req.session.user
-	res.render('user/wallet',{user})
+	let cartCount = await userHelper.getCartCount(req.session.user._id);
+	let user = await userHelper.findUser(req.session.user._id)
+	res.render('user/wallet',{user,cartCount})
+})
+router.post('/editAddress',async(req,res)=>{
+
+	await userHelper.editAddress(req.body)
+	res.json({
+		status:true
+	})
+})
+router.post('/modalLogin',async(req,res)=>{
+
+	let data = await userHelper.doLogin(req.body)
+	if(data.status){
+		req.session.user = data.user
+		req.session.userloggedIn = true
+		res.json({status:true})
+	}else{
+		res.json({status:false})
+	}
 })
 
 

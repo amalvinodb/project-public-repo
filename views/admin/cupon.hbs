@@ -56,48 +56,82 @@
         <div class="col py-3">
             <p class="fw-bold text-success fs-2 text-center text-decoration-underline">All Cupons</p>
             <a href="/admin/addcupon" class="btn btn-primary">add cupon</a>
-          
-                <section>
-                    <table class="table" id="table_id">
-                        <thead class="bg-primary">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Offer Name</th>
-                                <th scope="col">Offer Rate</th>
-                                <th scope="col">Cupon Code</th>
-                                <th scope="col">Aplicable Amount</th>
-                                <th scope="col">Maximum Amount</th>
-                                <th scope="col">Option's</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each cupons}}
-                            <tr>
-                                <th scope="row">{{inc @index}}</th>
-                                <td>{{this.offerName}}</td>
-                                <td>{{this.offerRate}}</td>
-                                <td>{{this.cuponCode}}</td>
-                                <td>{{this.amountAplicable}}</td>
-                                <td>{{this.maxAmount}}</td>
-                                <td>
-                                    <a href="/admin/editCupon?cuponId={{this._id}}" class="btn btn-primary"><i
-                                            class="bi bi-pencil-square"></i></a>
-                                    <a href="/admin/deleteCupon?cuponId={{this._id}}" class="btn btn-danger"><i
-                                            class="bi bi-trash"></i></a>
-                                </td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </section>
-                
-    
+
+            <section>
+                <table class="table" id="table_id">
+                    <thead class="bg-primary">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Offer Name</th>
+                            <th scope="col">Offer Rate</th>
+                            <th scope="col">Cupon Code</th>
+                            <th scope="col">Aplicable Amount</th>
+                            <th scope="col">Maximum Amount</th>
+                            <th scope="col">Option's</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each cupons}}
+                        <tr>
+                            <th scope="row">{{inc @index}}</th>
+                            <td>{{this.offerName}}</td>
+                            <td>{{this.offerRate}}</td>
+                            <td>{{this.cuponCode}}</td>
+                            <td>{{this.amountAplicable}}</td>
+                            <td>{{this.maxAmount}}</td>
+                            <td>
+                                <a onclick="editCupon('{{this._id}}')" class="btn btn-primary"><i
+                                        class="bi bi-pencil-square"></i></a>
+                                <a onclick="deleteCupon('{{this._id}}')" class="btn btn-danger"><i
+                                        class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </section>
+
+
 
         </div>
     </div>
 </div>
 
 <script>
+    function editCupon(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to edit this file!.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/editCupon?cuponId=' + id
+                } else {
+                    swal("Your file is safe!");
+                }
+            });
+
+    }
+    function deleteCupon(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/deleteCupon?cuponId=' + id
+                } else {
+                    swal("Your file is safe!");
+                }
+            });
+
+    }
     $(document).ready(function () {
         $('#table_id').DataTable();
     });

@@ -9,25 +9,31 @@
           <li class="nav-item">
             <a href="/user" class="nav-link text-white align-middle px-0">
               <i class="fs-4 bi-person-circle"></i>
-              <span class="ms-1 d-none d-sm-inline">user</span>
+              <span class="ms-1 d-none d-sm-inline">USER</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="/user/cart" class="nav-link text-white align-middle px-0">
               <i class="fs-4 bi-cart3"></i>
-              <span class="ms-1 d-none d-sm-inline">cart</span>
+              <span class="ms-1 d-none d-sm-inline">CART</span>
             </a>
           </li>
 
           <li>
             <a href="/user/wishlist" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
               style="width: 220px;background-color:blue">
-              <i class="fs-4 bi-heart-fill"></i> <span class="ms-1 d-none d-sm-inline">wishlist</span></a>
+              <i class="fs-4 bi-heart-fill"></i> <span class="ms-1 d-none d-sm-inline">WISHLIST</span></a>
           </li>
           <li>
             <a href="/user/allOrders" class="nav-link text-white px-0 align-middle">
               <i class="fs-4 bi-clipboard-data-fill"></i>
-              <span class="ms-1 d-none d-sm-inline">Orders</span>
+              <span class="ms-1 d-none d-sm-inline">ORDERS</span>
+            </a>
+          </li>
+          <li>
+            <a href="/user/wallet" class="nav-link text-white px-0 align-middle">
+              <i class="fs-4 bi bi-wallet2"></i>
+              <span class="ms-1 d-none d-sm-inline">WALLET</span>
             </a>
           </li>
         </ul>
@@ -60,8 +66,11 @@
                 @index
                 }}</th>
 
-              <th><img src="{{this.product.images.[0]}}" class="card-img-top" alt="..."
-                  style="margin:0 auto; width: 50px;height: 50px;" /></th>
+              <th>
+                <a href="/item/{{this.product._id}}"><img src="{{this.product.images.[0]}}" class="card-img-top"
+                    alt="..." style="margin:0 auto; width: 50px;height: 50px;" /></a>
+
+              </th>
               <td>{{this.product.productName}}</td>
               <td>{{this.product.offerPrice}}</td>
               <td> <button onclick="addToCart('{{this.product._id}}')" class="btn btn-success"><i
@@ -77,13 +86,13 @@
 
           </tbody>
         </table>
-   
+
 
 
       </section>
-      
+
     </div>
-    
+
   </div>
 </div>
 
@@ -92,7 +101,16 @@
 
 <script>
   function removeProduct(cartId, prodId) {
-    $.ajax({
+    swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+   $.ajax({
       url: "/user/removeFromWishlist",
       data: {
         wish: cartId,
@@ -100,10 +118,17 @@
       },
       method: 'post',
       success: (response) => {
-
-        location.reload()
+         swal("item removed!", "the item is removed from wishlist", "info").then((value)=>{
+location.reload()
+         })
+        
       }
     })
+  } else {
+    swal("Your item is safe!");
+  }
+});
+    
   }
 
 

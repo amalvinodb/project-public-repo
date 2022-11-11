@@ -23,7 +23,7 @@ module.exports = {
 					}
 				});
 			} else {
-				console.log("no such user");
+			
 				resolve({ status: false });
 			}
 		});
@@ -175,7 +175,10 @@ module.exports = {
 			let orderShipped= await db.get().collection(collection.ORDER_COLLECTION).find({status:"shipped"}).toArray()
 			let orderPlaced= await db.get().collection(collection.ORDER_COLLECTION).find({status:"placed"}).toArray()
 			let cancelOrder=await db.get().collection(collection.ORDER_COLLECTION).find({status:'canseled'}).toArray()
-			let cod =await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"cod"}).toArray()
+			let cod =await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"cod",status:"delivered"}).toArray()
+			let pal =await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"paypal",status:"delivered"}).toArray()
+			let razo = await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"razopay",status:"delivered"}).toArray()
+			let wallet = await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"wallet",status:"delivered"}).toArray()
 			let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
 			let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
 			let totalAmount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
@@ -208,6 +211,9 @@ module.exports = {
 				allOrders:orderTotal.length,
 				codOrders:cod.length,
 				user:users.length,
+				paypalOrders:pal.length,
+				razopayOrders:razo.length,
+				walletOrders:wallet.length,
 			}
 		
 			resolve(data)

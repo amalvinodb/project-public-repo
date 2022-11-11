@@ -2,19 +2,14 @@ const db = require("../config/connection");
 const collection = require("../config/collection");
 const bcrypt = require("bcrypt");
 const objectId = require("mongodb");
-const { response } = require("../app");
-const { USER_COLLECTION } = require("../config/collection");
 require("dotenv").config();
 const Razorpay = require("razorpay");
 const moment = require("moment");
-const { resolve } = require("path");
-const { now } = require("moment");
 require("dotenv").config();
 var instance = new Razorpay({
 	key_id: process.env.RAZO_KEY_ID,
 	key_secret: process.env.RAZO_SECRET_KEY,
 });
-
 present = null;
 module.exports = {
 	doSignup: (userData) => {
@@ -47,10 +42,10 @@ module.exports = {
 			present = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userData.email });
 			userName = await db.get().collection(collection.USER_COLLECTION).findOne({ Name: userData.Name });
 			if (present || userName) {
-				console.log("user");
+			
 				resolve(true);
 			} else {
-				console.log("no user");
+			
 				resolve(false);
 			}
 		});
@@ -63,17 +58,17 @@ module.exports = {
 			if (user && user.userStatus) {
 				await bcrypt.compare(userData.password, user.password).then((status) => {
 					if (status) {
-						console.log("true");
+			
 						response.user = user;
 						response.status = true;
 						resolve(response);
 					} else {
-						console.log("flase");
+				
 						resolve({ status: false });
 					}
 				});
 			} else {
-				console.log("no such user");
+			
 				resolve({ status: false });
 			}
 		});
@@ -127,7 +122,7 @@ module.exports = {
 							}
 						)
 						.then((responce) => {
-							console.log("iem added to cart");
+							
 							resolve();
 						});
 				}
@@ -140,7 +135,7 @@ module.exports = {
 					.collection(collection.CART_COLLECTION)
 					.insertOne(cartObj)
 					.then((responce) => {
-						console.log("content added");
+						
 						resolve();
 					});
 			}
@@ -488,7 +483,7 @@ module.exports = {
 		});
 	},
 	removeCartProduct: (details) => {
-		console.log("remove");
+	
 		return new Promise((resolve, reject) => {
 			db.get()
 				.collection(collection.CART_COLLECTION)
@@ -584,11 +579,11 @@ module.exports = {
 				.digest("hex");
 
 			if (expectedSignature === details.payment.razorpay_signature) {
-				console.log("sucess");
+				
 
 				resolve();
 			} else {
-				console.log("failure");
+
 				reject(details.responce.receipt);
 			}
 		});
@@ -631,7 +626,7 @@ module.exports = {
 				let prodExist = user.products.findIndex((product) => product.item == prod);
 
 				if (prodExist != -1) {
-					console.log("item already exist");
+			
 					resolve();
 				} else {
 					db.get()
@@ -643,7 +638,7 @@ module.exports = {
 							}
 						)
 						.then((responce) => {
-							console.log("iem added to cart");
+						
 							resolve();
 						});
 				}
@@ -656,7 +651,7 @@ module.exports = {
 					.collection(collection.WISHLIST_COLLECTION)
 					.insertOne(cartObj)
 					.then((responce) => {
-						console.log("content added");
+					
 						resolve();
 					});
 			}
@@ -764,11 +759,18 @@ module.exports = {
 	},
 	checkBalance: (userId, total) => {
 		return new Promise(async (resolve, reject) => {
+			let today = new Date();
+			let now = moment(today).format("YYYY-MM-DD");
 			let user = await db
 				.get()
 				.collection(collection.USER_COLLECTION)
 				.findOne({ _id: objectId.ObjectId(userId) });
 			if (user.wallet >= total[0].total) {
+				let history = {
+					type:"purchase",
+					date:now,
+					ammount:total[0].total,
+				}
 				await db
 					.get()
 					.collection(collection.USER_COLLECTION)
@@ -779,6 +781,7 @@ module.exports = {
 								wallet: parseFloat(user.wallet - total[0].total),
 								payment: "payed",
 							},
+							$push: { walletHistory: history },
 						}
 					);
 				resolve(true);
@@ -798,9 +801,9 @@ module.exports = {
 				.findOne({ _id: objectId.ObjectId(orderId) });
 
 			if (order.returnExpairy > now) {
-				console.log("can be possed");
+	
 			} else {
-				console.log("hello");
+
 				await db
 					.get()
 					.collection(collection.ORDER_COLLECTION)
@@ -874,7 +877,7 @@ module.exports = {
 				.findOne({ _id: objectId.ObjectId(orderdata.user) });
 
 			if (orderdata.payment == "payed the amount") {
-				console.log(orderdata);
+			
 				await db
 					.get()
 					.collection(collection.USER_COLLECTION)
@@ -934,7 +937,7 @@ module.exports = {
 								ammount: parseInt(parseInt(order.products[i].product.offerPrice) * parseInt(data.quantity)),
 								date: now,
 							};
-							if (order.payment != "payed the amount") {
+							if (order.payment == "payed the amount") {
 								await db
 									.get()
 									.collection(collection.USER_COLLECTION)
@@ -1161,4 +1164,27 @@ module.exports = {
 			resolve();
 		});
 	},
+	findUser:(id)=>{
+		return new Promise(async(resolve,reject)=>{
+			let user = await db.get().collection(collection.USER_COLLECTION).findOne({_id:objectId.ObjectId(id)})
+			resolve(user)
+		})
+	},
+	editAddress:(data)=>{
+		return new Promise(async(resolve,reject)=>{
+			await db.get().collection(collection.ADDRESS_COLLECTION).updateOne({_id:objectId.ObjectId(data.orderId)},{
+				$set:{
+					userName:data.username,
+					phnumber:data.phnumber,
+					pin:data.pin,
+					hname:data.hname,
+					region:data.region,
+					lmk:data.lmk,
+					town:data.town,
+					state:data.state,
+				}
+			})
+			resolve()
+		})
+	}
 };

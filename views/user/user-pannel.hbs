@@ -10,23 +10,29 @@
           <li>
             <a href="/user" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
               style="width: 220px;background-color:blue">
-              <i class="fs-4 bi-person-circle"></i> <span class="ms-1 d-none d-sm-inline">user</span></a>
+              <i class="fs-4 bi-person-circle"></i> <span class="ms-1 d-none d-sm-inline">USER</span></a>
           </li>
           <li class="nav-item">
             <a href="/user/cart" class="nav-link text-white align-middle px-0">
               <i class="fs-4 bi-cart3"></i>
-              <span class="ms-1 d-none d-sm-inline">cart</span>
+              <span class="ms-1 d-none d-sm-inline">CART</span>
             </a>
           </li>
           <li>
             <a href="/user/wishlist" class="nav-link text-white px-0 align-middle">
               <i class="fs-4 bi-heart-fill"></i>
-              <span class="ms-1 d-none d-sm-inline">Wishlist</span></a>
+              <span class="ms-1 d-none d-sm-inline">WISHLIST</span></a>
           </li>
           <li>
             <a href="/user/allOrders" class="nav-link text-white px-0 align-middle">
               <i class="fs-4 bi-clipboard-data-fill"></i>
-              <span class="ms-1 d-none d-sm-inline">Orders</span>
+              <span class="ms-1 d-none d-sm-inline">ORDERS</span>
+            </a>
+          </li>
+          <li>
+            <a href="/user/wallet" class="nav-link text-white px-0 align-middle " >
+              <i class="fs-4 bi bi-wallet2"></i>
+              <span class="ms-1 d-none d-sm-inline">WALLET</span>
             </a>
           </li>
         </ul>
@@ -64,9 +70,7 @@
               referal code: <br>
              <span class="text-primary border">{{user.referalCode}}</span>
             </div>
-            <div class="border mt-5 p-2" style="width: 200px;">
-              wallet Balance: <span class="text-success">{{user.wallet}}</span>
-            </div>
+           
           </section>
           <section class="mx-5 border rounded p-3" >
             <h1> <strong>ADDRESS</strong> </h1>

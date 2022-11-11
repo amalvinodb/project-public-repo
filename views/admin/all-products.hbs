@@ -2,23 +2,28 @@
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-dark min-vh-100">
-                <a href="/admin" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <a href="/admin"
+                    class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                     <ul><span class="fs-5 d-none d-sm-inline fw-bold text-decoration-underline">Admin Pannel</span></ul>
                 </a>
-              
+
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li>
                         <a href="/admin/dashBoard?time=1" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">Dash Board</span></a>
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">Dash
+                                Board</span></a>
                     </li>
                     <li>
                         <a href="/admin/allOrders" class="nav-link text-dark align-middle px-0">
                             <i class="fs-4 bi-box-seam-fill"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
                         </a>
                     </li>
-                    <li >
-                        <a href="/admin/allProducts" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill" style="width: 220px;background-color:blue">
-                            <i class="fs-4 bi-list-ul mx-2"></i> <span class="ms-1 d-none d-sm-inline">All Products</span></a>
+                    <li>
+                        <a href="/admin/allProducts"
+                            class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
+                            style="width: 220px;background-color:blue">
+                            <i class="fs-4 bi-list-ul mx-2"></i> <span class="ms-1 d-none d-sm-inline">All
+                                Products</span></a>
                     </li>
                     <li>
                         <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
@@ -32,13 +37,14 @@
 
                     <li>
                         <a href="/admin/report?ext=0" class="nav-link text-dark text-primary px-0 align-middle">
-                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">Report</span> </a>
+                            <i class="fs-4 bi-receipt-cutoff"></i> <span class="ms-1 d-none d-sm-inline">Report</span>
+                        </a>
                     </li>
                     <li>
                         <a href="/admin/cupon" class="nav-link text-dark px-0 align-middle">
                             <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-none d-sm-inline">Cupons</span> </a>
                     </li>
-                     <li>
+                    <li>
                         <a href="/admin/offers" class="nav-link text-dark text-primary px-0 align-middle">
                             <i class="bi bi-percent"></i> <span class="ms-1 d-none d-sm-inline">Offers</span>
                         </a>
@@ -47,23 +53,24 @@
                                 class="bi bi-box-arrow-left"></i> Signout</a></li>
                 </ul>
                 <hr>
-                
+
             </div>
         </div>
         <div class="col py-3">
-              <p class="fw-bold text-success fs-2 text-center text-decoration-underline">All Products</p>
+            <p class="fw-bold text-success fs-2 text-center text-decoration-underline">All Products</p>
             <section>
                 <a class="btn btn-primary" href="/admin/addproduct" role="button">Add product</a>
                 <table class="table" id="table_id">
                     <thead>
                         <tr>
-                            <th scope="col" >Index</th>
+                            <th scope="col">Index</th>
                             <th scope="col">Image</th>
                             <th scope="col">Product Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Price</th>
                             <th scope="col">Product Offer</th>
                             <th scope="col">Active Offer</th>
+                            <th scope="col">Offer Price</th>
                             <th scope="col">Catagories</th>
                             <th scope="col">Options</th>
 
@@ -74,23 +81,27 @@
                         <tr>
                             <th scope="row">{{inc @index}}</th>
                             <td>
-                                {{#each this.images}}
-                                <img src="{{this}}" class="card-img-top" alt="..."
-                                    style="margin:0 auto; width: 30px;height: 50px;">
-                                    {{/each}}
-                                    </td>
+
+                                <img src="{{this.images.[0]}}" class="card-img-top" alt="..."
+                                    style="margin:0 auto; width: 50px;height: 50px;">
+
+                            </td>
                             <td>{{this.productName}}</td>
-                           <td>{{this.quantity}}</td>
-                            <td> <del>{{this.price}}</del> {{this.offerPrice}}</td>
+                            <td>{{this.quantity}}</td>
+                            <td> {{this.price}} </td>
+
                             <td>{{this.offerRate}}</td>
+
                             <td>{{this.activeOffer}}</td>
+                            <td>{{this.offerPrice}}</td>
                             {{#each this.result}}
                             <td>{{this.catagoryName}}</td>
                             {{/each}}
                             <td>
-                                <a class="btn btn-primary" href="/admin/editProduct/{{this._id}}" role="button"><i class="bi bi-pencil-square"></i></a>
-                                <a class="btn btn-danger" href="/admin/deleteProduct/{{this._id}}"
-                                    role="button"><i class="bi bi-trash"></i></a>
+                                <a class="btn btn-primary" onclick="editProduct('{{this._id}}')" role="button"><i
+                                        class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-danger" onclick="deleteProduct('{{this._id}}')" role="button"><i
+                                        class="bi bi-trash"></i></a>
 
                             </td>
 
@@ -106,7 +117,39 @@
     </div>
 </div>
 <script>
-    $(document).ready( function () {
-    $('#table_id').DataTable();
-} );
+    function deleteProduct(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/deleteProduct/' + id
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    }
+    function editProduct(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to edit this file!.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    location.href = '/admin/editProduct/' + id
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    }
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
 </script>

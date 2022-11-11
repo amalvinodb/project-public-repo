@@ -23,7 +23,7 @@ module.exports = {
 				isOfferActive:product.isOfferRate,
 			})
 			.then((data) => {
-				console.log(data)
+		
 				resolve(data)
 			});
 		})

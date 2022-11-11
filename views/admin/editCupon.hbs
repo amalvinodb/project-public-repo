@@ -10,7 +10,7 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline">
                                         <input name="cuponName" type="text" id="productName"
-                                            class="form-control form-control-lg" value="{{cupon.offerName}}"/>
+                                            class="form-control form-control-lg" value="{{cupon.offerName}}" />
                                         <label class="form-label" for="firstName">offer name</label>
                                         {{#if error}}
                                         <p class="text-danger">such a cupon already exist</p>
@@ -20,8 +20,27 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline">
                                         <input name="offerRate" type="number" id="quantity"
-                                            class="form-control form-control-lg" min="1" max="99" value="{{cupon.offerRate}}"/>
+                                            class="form-control form-control-lg" min="1" max="99"
+                                            value="{{cupon.offerRate}}" />
                                         <label class="form-label" for="firstName">offer rate</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <input name="aplicableAmount" type="number" id="productName"
+                                            class="form-control form-control-lg" value="{{cupon.amountAplicable}}" required />
+                                        <label class="form-label" for="firstName">The applicable amount for the
+                                            cupon</label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <input name="maxAmount" type="number" id="quantity"
+                                            class="form-control form-control-lg" value="{{cupon.maxAmount}}" required />
+                                        <label class="form-label" for="firstName">Max amount for the cupon</label>
                                     </div>
                                 </div>
                             </div>

@@ -9,8 +9,8 @@
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li>
                         <a href="/admin/dashBoard?time=1" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-clipboard-data-fill"></i> <span
-                                class="ms-1 d-none d-sm-inline">Dash Board</span></a>
+                            <i class="fs-4 bi-clipboard-data-fill"></i> <span class="ms-1 d-none d-sm-inline">Dash
+                                Board</span></a>
                     </li>
                     <li>
                         <a href="/admin/allOrders" class="nav-link text-light px-0 align-middle my-3 px-4 rounded-pill"
@@ -20,11 +20,13 @@
                     </li>
                     <li>
                         <a href="/admin/allProducts" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-list-ul"></i> <span class="ms-1 d-none d-sm-inline ">All Products</span></a>
+                            <i class="fs-4 bi-list-ul"></i> <span class="ms-1 d-none d-sm-inline ">All
+                                Products</span></a>
                     </li>
                     <li>
                         <a href="/admin/manageCatagory" class="nav-link text-dark px-0 align-middle ">
-                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Manage Catagories</span></a>
+                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Manage
+                                Catagories</span></a>
                     </li>
                     <li>
                         <a href="/admin/allUsers" class="nav-link text-dark px-0 align-middle ">
@@ -69,7 +71,7 @@
                             <th scope="col">Total</th>
                             <th scope="col">User</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Address</th>
+                            <th scope="col">Payment Method</th>
                             <th scope="col">Oprion</th>
 
                         </tr>
@@ -94,11 +96,7 @@
                             <td>{{this.userName}}</td>
                             <td>{{this.date}}</td>
                             <td>
-                                <p>{{this.userEmail}}
-
-
-                                </p>
-
+                                <p>{{this.paymentMethod}}</p>
                             </td>
                             <td><a href="/admin/viewOrderDetails/{{this._id}}" class="btn btn-primary">view details</a>
                         </tr>

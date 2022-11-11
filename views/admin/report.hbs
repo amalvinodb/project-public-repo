@@ -181,26 +181,7 @@
                     } else if (start > end) {
 
                     } else {
-                        $.ajax({
-
-                            url: "/admin/filterReport",
-                            data: {
-                                start,
-                                end,
-                            },
-                            method: 'post',
-                            success: (response) => {
-                                document.getElementById('ts').innerText = response.data.totalSalesAmount;
-                                document.getElementById('tod').innerText = response.data.delivered;
-                                document.getElementById('top').innerText = response.data.placed;
-                                document.getElementById('os').innerText = response.data.shipped;
-                                document.getElementById('oc').innerText = response.data.cancel;
-                                document.getElementById('ao').innerText = response.data.allOrders;
-                                document.getElementById('co').innerText = response.data.codOrders;
-                                document.getElementById('nou').innerText = response.data.user;
-
-                            }
-                        })
+                        location.href = "/admin/report?typ=2&start="+start+"&end="+end;
                     }
 
                 }

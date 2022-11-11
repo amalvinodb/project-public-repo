@@ -1,40 +1,110 @@
 <form action="/user/checkout" id="checkoutForm">
-  <section class="container mt-5">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each prod}}
-        <tr>
-          <th scope="row">{{inc @index}}</th>
-          <td>{{this.product.productName}}</td>
-          <td>{{this.product.offerPrice}}</td>
-          <td>{{this.quantity}}</td>
-        </tr>
-        {{/each}}
+  <section class="container ">
 
-      </tbody>
-    </table>
   </section>
   <section class="container d-flex">
-    <div class="col-md-5 w-50 h-100 p-5 m-5">
+    <div class="col-md-5 w-50 h-100 px-5 mx-5">
       <label for="">select your address line</label>
-      <select name="addressline" class="form-select" aria-label="Default select example" required>
 
-        {{#each address}}
-        <option value="{{this._id}}">
-          <p>{{this.userName}}</p>
-        </option>
-        {{/each}}
+
+      {{#each address}}
+
+      <div class="form-check form-check">
+        <input name="addressline" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+          value="{{this._id}}" checked>
+        <label class="form-check-label" for="inlineRadio1">
+          {{this.userName}},{{this.phnumber}},{{this.pin}}, <br>
+          {{this.hname}},{{this.region}},{{this.lmk}}, <br>
+          {{this.town}},{{this.state}} <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+
+        </label>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+                <div class="d-fle">
+                  <div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-outline">
+                        <input name="userName" type="text" id="userName" class="form-control form-control-lg"
+                          value="{{this.userName}}" required/>
+                        <label class="form-label" for="firstName">user Name</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-outline">
+                        <input name="phnumber" type="" id="phnumber" class="form-control form-control-lg" value="{{this.phnumber}}" required/>
+                        <label class="form-label" for="firstName">phone number</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-outline">
+                        <input name="pin" type="" id="pin" class="form-control form-control-lg" value="{{this.pin}}" required/>
+                        <label class="form-label" for="firstName">pincode</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-outline">
+                        <input name="hname" type="" id="hname" class="form-control form-control-lg" value="{{this.hname}}" required/>
+                        <label class="form-label" for="firstName">flat No, house name,building,company,apartment</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-outline">
+                        <input name="region" type="" id="region" class="form-control form-control-lg" value="{{this.region}}" required/>
+                        <label class="form-label" for="firstName">area, street,sector,village</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-outline">
+                        <input name="lmk" type="" id="lmk" class="form-control form-control-lg" value="{{this.lmk}}" required/>
+                        <label class="form-label" for="firstName">land mark</label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <input name="town" type="text" id="town" class="form-control form-control-lg" value="{{this.town}}" required/>
+                          <label class="form-label" for="firstName">town or city</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-4">
+                        <div class="form-outline">
+                          <input name="state" type="text" id="state" class="form-control form-control-lg"
+                            value="{{this.state}}" required/>
+                          <label class="form-label" for="offerPrice">state</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              <button class="btn btn-primary" onclick="editAddress(event,'{{this._id}}')">add address</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {{/each}}
 
       </select>
-      <a href="/user/addAddress"> add an address</a>
+
+      {{!-- <a href="/user/addAddress" class="btn btn-primary">Add Address</a> --}}
     </div>
     <div class="m-5 bg-light w-50 h-100 p-5">
       {{#each total}}
@@ -78,100 +148,130 @@
 
 </form>
 <section class="footer">
-    <div class="r">
-        <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
-            <section class="d-flex justify-content-between p-4" style="background-color: #6351ce">
-                <div class="me-5">
-                    <span>* This is a trial websit that is made as a personal project please donot make any
-                        transactions..</span>
-                </div>
-                <div>
-                    <a href="https://www.facebook.com/natsu.av" target="_blank" class="text-white me-4">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://twitter.com/Amalvin54535076" target="_blank" class="text-white me-4">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                 
-                    <a href="https://www.instagram.com/_extream_bencher/" target="_blank" class="text-white me-4">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/amal-vinod-5454511a0/" target="_blank" class="text-white me-4">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/amalvinodb" target="_blank" class="text-white me-4">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </section>
-            <section class="">
-                <div class="container text-center text-md-start mt-5">
-                    <div class="row mt-3">
-                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                            <h6 class="text-uppercase fw-bold">Tech Park</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                This is a websit that i made using nodejs as my server side language.
-                                Using mongodb as my database which is a nosql database. This is my very
-                                first complete website with db and a serverside language. hbs was used as 
-                                a view engine. i did not use any fornt end stack.
-                            </p>
-                        </div>
-                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <h6 class="text-uppercase fw-bold">Navigation</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                <a href="/allProducts" class="text-white">All Products</a>
-                            </p>
-                            <p>
-                                <a href="/" class="text-white">Home</a>
-                            </p>
-                           
-                        </div>
-                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <h6 class="text-uppercase fw-bold">Menu</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                <a href="/user" class="text-white">Profile</a>
-                            </p>
-                            <p>
-                                <a href="/user/cart" class="text-white">Cart</a>
-                            </p>
-                            <p>
-                                <a href="/user/wishlist" class="text-white">Wishlist</a>
-                            </p>
-                            <p>
-                                <a href="/user/allOrders" class="text-white">Orders</a>
-                            </p>
-                            <p>
-                                <a href="/user/logout" class="text-danger">logout</a>
-                            </p>
-                        </div>
-                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                            <h6 class="text-uppercase fw-bold">Contact</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p><i class="fas fa-home mr-3"></i> Thodupuzha,Idukki,Kerala</p>
-                            <p><i class="fas fa-envelope mr-3"></i> amalvinodb2000@gmail.com</p>
-                            <p><i class="fas fa-phone mr-3"></i> +918157876820</p>
-                            <p><i class="fas fa-print mr-3"></i> +918136909633</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-                © 2020 Copyright:
-                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+  <div class="r">
+    <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
+      <section class="d-flex justify-content-between p-4" style="background-color: #6351ce">
+        <div class="me-5">
+          <span>* This is a trial websit that is made as a personal project please donot make any
+            transactions..</span>
+        </div>
+        <div>
+          <a href="https://www.facebook.com/natsu.av" target="_blank" class="text-white me-4">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://twitter.com/Amalvin54535076" target="_blank" class="text-white me-4">
+            <i class="fab fa-twitter"></i>
+          </a>
+
+          <a href="https://www.instagram.com/_extream_bencher/" target="_blank" class="text-white me-4">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/amal-vinod-5454511a0/" target="_blank" class="text-white me-4">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/amalvinodb" target="_blank" class="text-white me-4">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </section>
+      <section class="">
+        <div class="container text-center text-md-start mt-5">
+          <div class="row mt-3">
+            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+              <h6 class="text-uppercase fw-bold">Tech Park</h6>
+              <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px" />
+              <p>
+                This is a websit that i made using nodejs as my server side language.
+                Using mongodb as my database which is a nosql database. This is my very
+                first complete website with db and a serverside language. hbs was used as
+                a view engine. i did not use any fornt end stack.
+              </p>
             </div>
-        </footer>
-    </div>
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 class="text-uppercase fw-bold">Navigation</h6>
+              <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px" />
+              <p>
+                <a href="/allProducts" class="text-white">All Products</a>
+              </p>
+              <p>
+                <a href="/" class="text-white">Home</a>
+              </p>
+
+            </div>
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 class="text-uppercase fw-bold">Menu</h6>
+              <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px" />
+              <p>
+                <a href="/user" class="text-white">Profile</a>
+              </p>
+              <p>
+                <a href="/user/cart" class="text-white">Cart</a>
+              </p>
+              <p>
+                <a href="/user/wishlist" class="text-white">Wishlist</a>
+              </p>
+              <p>
+                <a href="/user/allOrders" class="text-white">Orders</a>
+              </p>
+              <p>
+                <a href="/user/logout" class="text-danger">logout</a>
+              </p>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+              <h6 class="text-uppercase fw-bold">Contact</h6>
+              <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px" />
+              <p><i class="fas fa-home mr-3"></i> Thodupuzha,Idukki,Kerala</p>
+              <p><i class="fas fa-envelope mr-3"></i> amalvinodb2000@gmail.com</p>
+              <p><i class="fas fa-phone mr-3"></i> +918157876820</p>
+              <p><i class="fas fa-print mr-3"></i> +918136909633</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      </div>
+    </footer>
+  </div>
 </section>
 {{!-- {{>user-footer}} --}}
 
 <script>
+function editAddress(event,order){
+  event.preventDefault()
+  var username = document.getElementById('userName').value
+  var phone = document.getElementById('phnumber').value
+  var pin = document.getElementById('pin').value
+  var house = document.getElementById('hname').value
+  var region = document.getElementById('region').value
+  var lmk = document.getElementById('lmk').value
+  var town = document.getElementById('town').value
+  var state = document.getElementById('state').value
+  $.ajax({
+    url:'/user/editAddress',
+    method:'post',
+    data:{
+      username:username,
+      phnumber:phone,
+      pin:pin,
+      hname:house,
+      region:region,
+      lmk:lmk,
+      town:town,
+      state:state,
+      orderId:order,
+    },
+    success:(responce)=>{
+      console.log(responce);
+      location.reload()
+    }
+  })
+}
   $('#checkoutForm').submit((e) => {
 
     e.preventDefault()
@@ -221,8 +321,24 @@
           var rzp1 = new Razorpay(options);
           rzp1.open();
         } else if (responce.route == 'wallet') {
-         
-          location.href = "/user/orderSucess?order="+responce.id
+          if (responce.resp) {
+            location.href = "/user/orderSucess?order=" + responce.id
+          } else {
+            Toastify({
+              text: "Insufficient wallet balance",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top", // `top` or `bottom`
+              position: "center", // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+              style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+              },
+              onClick: function () { } // Callback after click
+            }).showToast();
+          }
+
         }
       }
     })
@@ -260,7 +376,7 @@
       },
       method: 'post',
       success: (responce) => {
-        
+
         if (responce.rate != 0) {
           Toastify({
             text: "cupon have been applied",

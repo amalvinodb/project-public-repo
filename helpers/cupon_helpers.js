@@ -1,9 +1,8 @@
 const db = require("../config/connection");
 const collection = require("../config/collection");
-const bcrypt = require("bcrypt");
+
 const objectId = require("mongodb");
-const { response } = require("../app");
-const { USER_COLLECTION } = require("../config/collection");
+
 require("dotenv").config();
 require("dotenv").config();
 
@@ -47,6 +46,8 @@ module.exports = {
                     offerName:data.cuponName,
                     offerRate:data.offerRate,
                     cuponCode:"tecPark-"+data.cuponName+"-"+data.offerRate,
+                    amountAplicable:data.aplicableAmount,
+                    maxAmount:data.maxAmount,
                 }
             })
             resolve()
