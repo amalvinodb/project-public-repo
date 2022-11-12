@@ -4,7 +4,7 @@ const state={
 }
 
 module.exports.connect = (done)=>{
-    const url = 'mongodb://localhost:27017'
+    const url = 'mongodb+srv://amalvinod:EyGdkpL3NAClNLSu@atlascluster.lhokymm.mongodb.net/?retryWrites=true&w=majority'
     const dbName = 'techPark';
     mongoClient.connect(url,(err,data)=>{
         if(err) return done(err)

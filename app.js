@@ -21,10 +21,10 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use((req,res,next)=>{
-  res.set('Cache-Control','no-cache, private,no-store,must-revalidate,max-stale=0,pre-check=0')
-  next()
-})
+// app.use((req,res,next)=>{
+//   res.set('Cache-Control','no-cache, private,no-store,must-revalidate,max-stale=0,pre-check=0')
+//   next()
+// })
 // view engine setup
 app.engine(
   "hbs",
