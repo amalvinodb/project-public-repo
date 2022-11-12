@@ -380,6 +380,7 @@ module.exports = {
 			let orderObj = {
 				deleveryDetails: address,
 				user: order.userId,
+				userPhone:user.phone,
 				userName: user.Name,
 				userEmail: user.email,
 				totalPrice: total,
@@ -394,8 +395,10 @@ module.exports = {
 			db.get()
 				.collection(collection.ORDER_COLLECTION)
 				.insertOne(orderObj)
-				.then((responce) => {
-					resolve(responce.insertedId);
+				.then(async(responce) => {
+					// console.log(responce,"data")
+					let data = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id:objectId.ObjectId(responce.insertedId)})
+					resolve(data)
 				});
 		});
 	},
@@ -596,6 +599,7 @@ module.exports = {
 		});
 	},
 	changePaymentStatus: (orderId) => {
+		console.log(orderId)
 		return new Promise((resolve, reject) => {
 			db.get()
 				.collection(collection.ORDER_COLLECTION)

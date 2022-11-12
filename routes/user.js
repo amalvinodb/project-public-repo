@@ -142,7 +142,7 @@ router.get("/cart", isUserLoggedIn, async (req, res) => {
 	let user = req.session.user;
 	let prod = await userHelper.getCart(req.session.user._id);
 
-	// prod = prod;
+
 	res.render("user/cart", { prod, user, cartCount, total });
 });
 router.get("/addToCart/:id", isUserLoggedIn, (req, res) => {
@@ -156,6 +156,10 @@ router.post("/changeProductQuantity", (req, res, next) => {
 	});
 });
 router.get("/checkout", isUserLoggedIn, async (req, res) => {
+	let error = false
+	if(req.query.error){
+		error = req.query.error
+	}
 	let prod = await userHelper.getCart(req.session.user._id);
 
 	if (prod[0]) {
@@ -163,7 +167,7 @@ router.get("/checkout", isUserLoggedIn, async (req, res) => {
 
 		let user = req.session.user;
 		let address = await userHelper.findUserAddress(user._id);
-		res.render("user/checkout", { user, address, total, prod });
+		res.render("user/checkout", { user, address, total, prod,error});
 	} else {
 		res.redirect("/user/cart");
 	}
@@ -179,6 +183,7 @@ router.post("/addAddress", (req, res) => {
 	});
 });
 router.post("/checkout", async (req, res) => {
+	
 	let products = await userHelper.getProductList(req.body.userId);
 	let total = await userHelper.getTotal(req.body.userId);
 	if (req.body.cupon) {
@@ -203,7 +208,8 @@ router.post("/checkout", async (req, res) => {
 	let user = req.session.user;
 	let address = await userHelper.findSingleAddress(req.body.addressline);
 
-	let prod = userHelper.placeOrder(req.body, user, total, address, first, rate).then(async (responce) => {
+	let prod = await userHelper.placeOrder(req.body, user, total, address, first, rate).then(async (responce) => {
+		
 		let order = responce;
 		if (req.body.payment == "cod") {
 		
@@ -211,7 +217,9 @@ router.post("/checkout", async (req, res) => {
 			res.json({ success: true, order: responce });
 		} else if (req.body.payment == "razopay") {
 			
-			userHelper.generateRazopay(responce, total).then((responce) => {
+			userHelper.generateRazopay(responce._id, total).then((responce) => {
+		
+				responce.userdata=order
 				responce.route = "razo";
 				res.json(responce);
 			});
@@ -219,7 +227,7 @@ router.post("/checkout", async (req, res) => {
 			let tot = Math.ceil(total[0].total / 80);
 
 			req.session.totoal = tot;
-			req.session.order = responce;
+			req.session.order = responce._id;
 			
 			const create_payment_json = {
 				intent: "sale",
@@ -485,6 +493,11 @@ router.post('/modalLogin',async(req,res)=>{
 	}else{
 		res.json({status:false})
 	}
+})
+router.post('/getAddressDetails',async(req,res)=>{
+	let address = await userHelper.findSingleAddress(req.body.addressId)
+
+	res.json({success:true,address})
 })
 
 
