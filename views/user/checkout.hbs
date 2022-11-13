@@ -209,11 +209,7 @@
     e.preventDefault()
     try {
       let adr = document.getElementById("addres").value
-    } catch {
-      location.href = '/user/checkout?error=true'
-    }
-
-    $.ajax({
+      $.ajax({
       url: '/user/checkout',
       method: 'post',
       data: $('#checkoutForm').serialize(),
@@ -279,6 +275,11 @@
         }
       }
     })
+    } catch {
+      location.href = '/user/checkout?error=true'
+    }
+
+    
   })
   function verifyPayment(payment, responce) {
     
