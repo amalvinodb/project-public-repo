@@ -1,10 +1,11 @@
 const mongoClient = require('mongodb').MongoClient
+require("dotenv").config();
 const state={
     db:null,
 }
 
 module.exports.connect = (done)=>{
-    const url = 'mongodb+srv://amalvinod:EyGdkpL3NAClNLSu@atlascluster.lhokymm.mongodb.net/?retryWrites=true&w=majority'
+    const url = process.env.ATLAS_QUERRY
     const dbName = 'techPark';
     mongoClient.connect(url,(err,data)=>{
         if(err) return done(err)
