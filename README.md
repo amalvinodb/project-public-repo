@@ -1,4 +1,4 @@
-# the reade me file for the public repo for my first ecommerce website 
+# the reade me file for the public repo for ecommerce website 
 this website was made on the men stack with hbs as a template engine 
 this repo contains my path to learn the nodejs and mongodb 
 
